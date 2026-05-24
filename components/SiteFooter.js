@@ -39,6 +39,13 @@ export default function SiteFooter() {
             </ul>
           </div>
         </div>
+        <nav className="site-footer__legal">
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms &amp; Conditions</Link>
+          <Link href="/refund-policy">Refund &amp; Cancellation</Link>
+          <Link href="/shipping">Shipping &amp; Delivery</Link>
+          <Link href="/contact">Contact Us</Link>
+        </nav>
         <div className="site-footer__bottom">
           <span>© 2026 The Human Side</span>
           <span>Made with care, by hand</span>
