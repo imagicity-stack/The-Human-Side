@@ -1,0 +1,20 @@
+{
+  "name": "the-human-side",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "firebase": "^11.0.2",
+    "firebase-admin": "^12.6.0",
+    "razorpay": "^2.9.5",
+    "nodemailer": "^6.9.16"
+  }
+}
