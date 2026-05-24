@@ -34,12 +34,12 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
-// Firestore database id. This project uses a NAMED database ("the-human-side"),
-// not the "(default)" one, so the Admin SDK is pointed at it explicitly.
-const DATABASE_ID = "the-human-side";
+// Firestore database id (named database, not "(default)"). Configurable via
+// the FIRESTORE_DATABASE_ID param in functions/.env; defaults to the-human-side.
+const FIRESTORE_DATABASE_ID = defineString("FIRESTORE_DATABASE_ID", { default: "the-human-side" });
 
 admin.initializeApp();
-const db = getFirestore(admin.app(), DATABASE_ID);
+const db = getFirestore(admin.app(), FIRESTORE_DATABASE_ID.value());
 const FieldValue = admin.firestore.FieldValue;
 
 // --- secrets ---
