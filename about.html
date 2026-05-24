@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>About — The Human Side</title>
 <link rel="stylesheet" href="assets/shared.css" />
-<script src="assets/image-slot.js"></script>
 <style>
   /* ============================================================
      About page — calm editorial
@@ -61,14 +60,16 @@
     gap: 16px;
     height: clamp(220px, 30vw, 380px);
   }
-  .hero-strip image-slot {
+  .hero-strip img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     display: block;
+    background: var(--bg-deep);
   }
   @media (max-width: 800px) {
     .hero-strip { grid-template-columns: 1fr; height: auto; }
-    .hero-strip image-slot { aspect-ratio: 4/3; height: auto; }
+    .hero-strip img { aspect-ratio: 4/3; height: auto; }
   }
 
   /* ---- WHO WE ARE — two columns ---- */
@@ -176,9 +177,11 @@
     border-top: 1px solid rgba(255,255,255,0.08);
     align-items: start;
   }
-  .timeline__row image-slot {
+  .timeline__row img {
     width: 100%;
     aspect-ratio: 4/3;
+    object-fit: cover;
+    background: var(--bg-deep);
   }
   @media (max-width: 900px) {
     .timeline__row { grid-template-columns: 1fr; gap: 12px; }
@@ -314,9 +317,9 @@
       </p>
     </div>
     <div class="hero-strip">
-      <image-slot id="about-hero-1" shape="rounded" radius="4" placeholder="Wide team / drive day photo"></image-slot>
-      <image-slot id="about-hero-2" shape="rounded" radius="4" placeholder="Portrait / candid"></image-slot>
-      <image-slot id="about-hero-3" shape="rounded" radius="4" placeholder="Detail shot"></image-slot>
+      <img src="assets/images/about-1.jpg" alt="Wide team / drive day" loading="lazy" />
+      <img src="assets/images/about-2.jpg" alt="Portrait / candid" loading="lazy" />
+      <img src="assets/images/about-3.jpg" alt="Detail shot" loading="lazy" />
     </div>
   </div>
 </section>
@@ -421,7 +424,7 @@
             <h4>The first conversation</h4>
             <p>A small group of students start meeting on Saturdays — at first to vent, then to plan. The phrase "the side that still cares" comes out of one of those meetings, half-joking.</p>
           </div>
-          <image-slot id="about-tl-1" shape="rounded" radius="3" placeholder="First meeting"></image-slot>
+          <img src="assets/images/timeline-1.jpg" alt="First meeting" loading="lazy" />
         </div>
         <div class="timeline__row">
           <div class="timeline__date">2026 · January</div>
@@ -429,7 +432,7 @@
             <h4>Held by Edenwoods</h4>
             <p>Edenwoods Eduhub Foundation takes the initiative under its umbrella — giving it a legal home, funding rails, and the freedom to stay student-led.</p>
           </div>
-          <image-slot id="about-tl-2" shape="rounded" radius="3" placeholder="Foundation signing"></image-slot>
+          <img src="assets/images/timeline-2.jpg" alt="Foundation signing" loading="lazy" />
         </div>
         <div class="timeline__row">
           <div class="timeline__date">2026 · February</div>
@@ -437,7 +440,7 @@
             <h4>The first drives</h4>
             <p>Two small drives, on campus and at a partner shelter. They're imperfect. They go ahead anyway. Half of being honest is being willing to start before you're ready.</p>
           </div>
-          <image-slot id="about-tl-3" shape="rounded" radius="3" placeholder="First drive"></image-slot>
+          <img src="assets/images/timeline-3.jpg" alt="First drive" loading="lazy" />
         </div>
         <div class="timeline__row">
           <div class="timeline__date">Now</div>
@@ -445,7 +448,7 @@
             <h4>This page</h4>
             <p>The initiative is open — to students, parents, faculty, and friends of the school. The website is here so you can find us, and so we can keep showing our working.</p>
           </div>
-          <image-slot id="about-tl-4" shape="rounded" radius="3" placeholder="This moment"></image-slot>
+          <img src="assets/images/timeline-4.jpg" alt="This moment" loading="lazy" />
         </div>
       </div>
     </div>

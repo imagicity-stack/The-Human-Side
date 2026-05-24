@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Get Involved — The Human Side</title>
 <link rel="stylesheet" href="assets/shared.css" />
-<script src="assets/image-slot.js"></script>
 <script src="assets/config.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
 <style>
@@ -178,7 +177,7 @@
     margin-top: 32px;
     aspect-ratio: 4/3;
   }
-  .form-side__image image-slot { width: 100%; height: 100%; display: block; }
+  .form-side__image img { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--bg-deep); }
   .form-side p {
     color: var(--ink-soft);
     max-width: 36ch;
@@ -646,15 +645,6 @@
     letter-spacing: 0.12em;
     margin-left: 4px;
   }
-  .membership__finefoot {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: color-mix(in oklab, var(--bg) 55%, transparent);
-    margin: 18px 0 0;
-  }
-
   /* ---- membership card (right column) ---- */
   .membership__card-wrap {
     position: relative;
@@ -1126,7 +1116,7 @@
     <div class="page-hero__inner">
       <h1>The doors are<br/><em>open.</em> Walk in.</h1>
       <p class="page-hero__lede">
-        Become a registered volunteer for a one-time ₹999 — kit, badge,
+        Become a registered volunteer for a one-time <span data-fee>₹999</span> — kit, badge,
         and an ID that says you're in. Or volunteer your time, donate,
         or just say hello. Every door leads to the same room.
       </p>
@@ -1141,17 +1131,17 @@
 
       <!-- LEFT: PITCH + BENEFITS + CTA -->
       <div class="membership__copy">
-        <span class="eyebrow">— Membership · One-time · ₹999</span>
+        <span class="eyebrow">— Membership · One-time · <span data-fee>₹999</span></span>
         <h2>Become a <em>registered<br/>volunteer</em> of<br/>The Human Side.</h2>
         <p class="membership__lede">
-          Stand with us — officially. A one-time joining fee of <strong>₹999</strong>
+          Stand with us — officially. A one-time joining fee of <strong data-fee>₹999</strong>
           gets you the kit, the badge, and the ID. The kind of belonging
           you can show, not just tell.
         </p>
 
         <div class="membership__price">
           <span class="currency">₹</span>
-          <span class="value">999</span>
+          <span class="value" data-fee-num>999</span>
           <div class="meta">
             <span class="k">One-time</span>
             <span class="v">Lifetime member</span>
@@ -1171,11 +1161,9 @@
 
         <button type="button" id="membership-btn" class="membership__cta">
           Become a member
-          <span class="price-pill">₹999</span>
+          <span class="price-pill" data-fee>₹999</span>
           <span class="arrow" aria-hidden="true">→</span>
         </button>
-
-        <p class="membership__finefoot">— Secure payment · Razorpay · INR · Receipted</p>
       </div>
 
       <!-- RIGHT: MEMBERSHIP CARD + KIT GRID -->
@@ -1359,7 +1347,7 @@
           <li>We answer every single message</li>
         </ul>
         <div class="form-side__image">
-          <image-slot id="gi-volunteer" shape="rounded" radius="4" placeholder="Volunteers at work"></image-slot>
+          <img src="assets/images/volunteer.jpg" alt="Volunteers at work" loading="lazy" />
         </div>
       </div>
 
@@ -1674,11 +1662,11 @@
     <!-- FORM VIEW -->
     <div id="reg-form-view">
       <div class="reg-head">
-        <span class="eyebrow">— Membership registration · One-time · ₹999</span>
+        <span class="eyebrow">— Membership registration · One-time · <span data-fee>₹999</span></span>
         <h2 id="reg-title">Register as a <em>volunteer.</em></h2>
         <p>
           Fill in your details below. We'll save your registration, take your
-          one-time ₹999 fee securely via Razorpay, and issue you a unique
+          one-time <span data-fee>₹999</span> fee securely via Razorpay, and issue you a unique
           membership ID (e.g. <strong>THS001</strong>) on success.
         </p>
       </div>
@@ -1711,23 +1699,24 @@
           </div>
           <div class="reg-row-3">
             <div class="field">
-              <label for="reg-dob">Date of birth</label>
-              <input id="reg-dob" name="dob" type="date" />
+              <label for="reg-dob">Date of birth <span class="req">*</span></label>
+              <input id="reg-dob" name="dob" type="date" required />
             </div>
             <div class="field">
-              <label for="reg-gender">Gender</label>
-              <select id="reg-gender" name="gender">
-                <option value="">Prefer not to say</option>
+              <label for="reg-gender">Gender <span class="req">*</span></label>
+              <select id="reg-gender" name="gender" required>
+                <option value="">Select</option>
                 <option>Female</option>
                 <option>Male</option>
                 <option>Non-binary</option>
+                <option>Prefer not to say</option>
                 <option>Other</option>
               </select>
             </div>
             <div class="field">
-              <label for="reg-blood">Blood group</label>
-              <select id="reg-blood" name="bloodGroup">
-                <option value="">—</option>
+              <label for="reg-blood">Blood group <span class="req">*</span></label>
+              <select id="reg-blood" name="bloodGroup" required>
+                <option value="">Select</option>
                 <option>A+</option><option>A−</option>
                 <option>B+</option><option>B−</option>
                 <option>AB+</option><option>AB−</option>
@@ -1740,21 +1729,21 @@
         <fieldset class="reg-fieldset">
           <legend>Where you are</legend>
           <div class="field">
-            <label for="reg-address">Address</label>
-            <input id="reg-address" name="address" type="text" placeholder="House / street / area" />
+            <label for="reg-address">Address <span class="req">*</span></label>
+            <input id="reg-address" name="address" type="text" placeholder="House / street / area" required />
           </div>
           <div class="reg-row-3">
             <div class="field">
-              <label for="reg-city">City</label>
-              <input id="reg-city" name="city" type="text" placeholder="Bengaluru" />
+              <label for="reg-city">City <span class="req">*</span></label>
+              <input id="reg-city" name="city" type="text" placeholder="Bengaluru" required />
             </div>
             <div class="field">
-              <label for="reg-state">State</label>
-              <input id="reg-state" name="state" type="text" placeholder="Karnataka" />
+              <label for="reg-state">State <span class="req">*</span></label>
+              <input id="reg-state" name="state" type="text" placeholder="Karnataka" required />
             </div>
             <div class="field">
-              <label for="reg-pincode">PIN code</label>
-              <input id="reg-pincode" name="pincode" type="text" inputmode="numeric" pattern="[0-9]{6}" placeholder="560001" />
+              <label for="reg-pincode">PIN code <span class="req">*</span></label>
+              <input id="reg-pincode" name="pincode" type="text" inputmode="numeric" pattern="[0-9]{6}" placeholder="560001" required />
             </div>
           </div>
         </fieldset>
@@ -1775,16 +1764,16 @@
               </select>
             </div>
             <div class="field">
-              <label for="reg-org">School / organisation</label>
-              <input id="reg-org" name="organisation" type="text" placeholder="The Elden Heights School" />
+              <label for="reg-org">School / organisation <span class="req">*</span></label>
+              <input id="reg-org" name="organisation" type="text" placeholder="The Elden Heights School" required />
             </div>
           </div>
           <div class="field">
-            <label for="reg-grade">Class / grade or designation</label>
-            <input id="reg-grade" name="classOrDesignation" type="text" placeholder="Grade 11 · or your role" />
+            <label for="reg-grade">Class / grade or designation <span class="req">*</span></label>
+            <input id="reg-grade" name="classOrDesignation" type="text" placeholder="Grade 11 · or your role" required />
           </div>
           <div class="field field--checks">
-            <label>Causes you care about</label>
+            <label>Causes you care about <span class="req">*</span></label>
             <div class="check-grid">
               <label class="check"><input type="checkbox" name="interests" value="Women empowerment" /> Women empowerment</label>
               <label class="check"><input type="checkbox" name="interests" value="Anti-harassment awareness" /> Anti-harassment awareness</label>
@@ -1800,41 +1789,36 @@
           <legend>Kit &amp; emergency</legend>
           <div class="reg-row-3">
             <div class="field">
-              <label for="reg-tshirt">T-shirt size</label>
-              <select id="reg-tshirt" name="tshirtSize">
+              <label for="reg-tshirt">T-shirt size <span class="req">*</span></label>
+              <select id="reg-tshirt" name="tshirtSize" required>
                 <option value="">Select</option>
                 <option>XS</option><option>S</option><option>M</option>
                 <option>L</option><option>XL</option><option>XXL</option>
               </select>
             </div>
             <div class="field">
-              <label for="reg-ename">Emergency contact name</label>
-              <input id="reg-ename" name="emergencyName" type="text" placeholder="Parent / guardian" />
+              <label for="reg-ename">Emergency contact name <span class="req">*</span></label>
+              <input id="reg-ename" name="emergencyName" type="text" placeholder="Parent / guardian" required />
             </div>
             <div class="field">
-              <label for="reg-ephone">Emergency contact phone</label>
-              <input id="reg-ephone" name="emergencyPhone" type="tel" inputmode="tel" placeholder="+91 …" />
-            </div>
-          </div>
-          <div class="form__row">
-            <div class="field">
-              <label for="reg-hear">How did you hear about us?</label>
-              <select id="reg-hear" name="hearAbout">
-                <option value="">Select one</option>
-                <option>School announcement</option>
-                <option>A friend or family</option>
-                <option>Social media</option>
-                <option>Edenwoods Foundation</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="reg-tee">&nbsp;</label>
+              <label for="reg-ephone">Emergency contact phone <span class="req">*</span></label>
+              <input id="reg-ephone" name="emergencyPhone" type="tel" inputmode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" required />
             </div>
           </div>
           <div class="field">
-            <label for="reg-why">Why do you want to join? (optional)</label>
-            <textarea id="reg-why" name="motivation" placeholder="Tell us what moves you — skills, time, ideas."></textarea>
+            <label for="reg-hear">How did you hear about us? <span class="req">*</span></label>
+            <select id="reg-hear" name="hearAbout" required>
+              <option value="">Select one</option>
+              <option>School announcement</option>
+              <option>A friend or family</option>
+              <option>Social media</option>
+              <option>Edenwoods Foundation</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reg-why">Why do you want to join? <span class="req">*</span></label>
+            <textarea id="reg-why" name="motivation" placeholder="Tell us what moves you — skills, time, ideas." required></textarea>
           </div>
         </fieldset>
 
@@ -1850,7 +1834,7 @@
         <div class="reg-actions">
           <button type="submit" class="reg-submit" id="reg-submit">
             <span class="reg-submit__label">Register &amp; pay ₹999</span>
-            <span class="price-pill">₹999</span>
+            <span class="price-pill" data-fee>₹999</span>
             <span class="arrow" aria-hidden="true">→</span>
           </button>
           <span class="reg-pay-note">Secure · Razorpay · INR · One-time</span>
@@ -1867,7 +1851,7 @@
       </div>
       <h2>You're <em>in.</em> Welcome.</h2>
       <p>
-        Your ₹999 membership is confirmed and your registration is saved.
+        Your <span data-fee>₹999</span> membership is confirmed and your registration is saved.
         Here is your official, lifetime member ID — keep it safe.
       </p>
       <div class="reg-id-card">
@@ -2019,7 +2003,25 @@
     if (cardName) cardName.textContent = fullName(data);
   }
 
-  const RESET_LABEL = 'Register & pay ₹999';
+  // ---- dynamic registration fee (admin-configurable via the backend) ----
+  let feeAmount = 999;
+  let RESET_LABEL = 'Register & pay ₹999';
+  const fmtFee = (n) => '₹' + Number(n).toLocaleString('en-IN');
+
+  function applyFee(amount) {
+    feeAmount = Math.max(1, Math.floor(Number(amount) || 999));
+    document.querySelectorAll('[data-fee]').forEach((el) => { el.textContent = fmtFee(feeAmount); });
+    document.querySelectorAll('[data-fee-num]').forEach((el) => { el.textContent = Number(feeAmount).toLocaleString('en-IN'); });
+    RESET_LABEL = 'Register & pay ' + fmtFee(feeAmount);
+    if (submitLbl && !submitBtn.classList.contains('reg-busy')) submitLbl.textContent = RESET_LABEL;
+  }
+
+  async function loadFee() {
+    try {
+      const s = await api('/getSettings', {});
+      if (s && s.amount) applyFee(s.amount);
+    } catch (_) { /* backend unreachable — keep the default ₹999 display */ }
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -2027,6 +2029,12 @@
       errorBox.classList.remove('is-show');
 
       if (!form.reportValidity()) return;
+
+      // All causes are optional individually, but at least one is required.
+      if (form.querySelectorAll('input[name="interests"]:checked').length === 0) {
+        showError('Please select at least one cause you care about.');
+        return;
+      }
 
       if (!razorpayReady) {
         showError('Payment isn’t configured yet. Add your RAZORPAY_KEY_ID in assets/config.js and deploy the Cloud Functions to enable registration.');
@@ -2059,7 +2067,7 @@
         amount:      order.amount,            // paise, echoed by the server
         currency:    order.currency || env.CURRENCY || 'INR',
         name:        env.ORG_NAME || 'The Human Side',
-        description: 'Volunteer Membership · One-time · ₹999',
+        description: 'Volunteer Membership · One-time · ' + fmtFee(feeAmount),
         image:       env.ORG_LOGO || 'assets/logo-icon.png',
         theme:       { color: env.THEME_COLOR || '#7C3F98' },
         prefill: {
@@ -2107,6 +2115,9 @@
       rzp.open();
     });
   }
+
+  // Pull the current registration fee so every ₹ display matches the backend.
+  loadFee();
 })();
 </script>
 

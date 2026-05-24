@@ -180,12 +180,12 @@ p { text-wrap: pretty; }
   gap: 8px;
   padding: 10px 16px;
   background: var(--ink);
-  color: var(--bg);
+  color: #ffffff;
   border-radius: 999px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
 }
-.site-nav__cta:hover { background: var(--red); color: var(--bg); }
+.site-nav__cta:hover { background: var(--red); color: #ffffff; }
 
 /* ---- shared footer ---- */
 .site-footer {

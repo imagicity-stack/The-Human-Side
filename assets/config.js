@@ -53,5 +53,27 @@ window.__ENV__ = {
      Razorpay SECRET stays only in Firebase (functions:secrets:set) —
      it must never appear in this file.
   ---------------------------------------------------------- */
-  API_BASE_URL: "https://REGION-PROJECT_ID.cloudfunctions.net"
+  API_BASE_URL: "https://REGION-PROJECT_ID.cloudfunctions.net",
+
+  /* ----------------------------------------------------------
+     Firebase WEB config — used ONLY by admin.html for the admin
+     login (Firebase Authentication). These values are public/safe
+     to ship in the browser; the dashboard is protected by Firebase
+     Auth + server-side checks that only allow ADMIN_EMAIL through.
+
+     Get these from: Firebase console → Project settings → General →
+     Your apps → SDK setup and configuration → Config.
+
+     Create the admin user once in: Firebase console → Authentication
+     → Users → Add user (email admin@thehumanside.org + a password),
+     and enable the Email/Password sign-in provider.
+  ---------------------------------------------------------- */
+  FIREBASE_CONFIG: {
+    apiKey:            "REPLACE_WITH_FIREBASE_API_KEY",
+    authDomain:        "REPLACE_PROJECT.firebaseapp.com",
+    projectId:         "REPLACE_PROJECT_ID",
+    storageBucket:     "REPLACE_PROJECT.appspot.com",
+    messagingSenderId: "REPLACE_SENDER_ID",
+    appId:             "REPLACE_APP_ID"
+  }
 };
