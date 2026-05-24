@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Partners — The Human Side</title>
+<link rel="stylesheet" href="assets/shared.css" />
+<script src="assets/image-slot.js"></script>
+<style>
+  /* ============================================================
+     Partners page
+     ============================================================ */
+
+  .page-hero {
+    padding: clamp(60px, 8vw, 110px) 0 clamp(50px, 6vw, 80px);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-hero__crumbs {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .page-hero__crumbs a:hover { color: var(--red); }
+  .page-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .page-hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(54px, 8vw, 116px);
+    line-height: 0.94;
+    letter-spacing: -0.005em;
+    margin: 0;
+    max-width: 13ch;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--red); }
+  .page-hero__lede {
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.7vw, 26px);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 38ch;
+  }
+  .page-hero__lede em { font-style: italic; color: var(--red); }
+
+  /* ---- PARTNER FEATURE ---- */
+  .partner {
+    padding: clamp(80px, 10vw, 140px) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .partner--cream { background: var(--bg-deep); }
+  .partner__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .partner--reverse .partner__inner {
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .partner--reverse .partner__copy { order: 2; }
+  .partner--reverse .partner__visual { order: 1; }
+
+  .partner__role {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .partner__role .num {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .partner h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.005em;
+    margin: 0 0 24px;
+  }
+  .partner h2 em { font-style: italic; color: var(--red); }
+  .partner__lede {
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.7vw, 26px);
+    line-height: 1.4;
+    margin: 0 0 28px;
+    color: var(--ink);
+    max-width: 36ch;
+  }
+  .partner__lede em { font-style: italic; color: var(--red); }
+  .partner__copy p {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    max-width: 50ch;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .partner__meta {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .partner__meta .pair .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .partner__meta .pair .v {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .partner__cta {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .partner__visual {
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-rows: 1.4fr 1fr;
+    gap: 16px;
+    aspect-ratio: 1.05 / 1;
+  }
+  .partner__visual-image {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .partner__visual-image image-slot { width: 100%; height: 100%; display: block; }
+  .partner__visual-logo {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .partner--cream .partner__visual-image,
+  .partner--cream .partner__visual-logo { background: var(--bg); }
+  .partner__visual-logo img {
+    max-width: 60%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  .partner__visual-logo::before {
+    content: attr(data-stamp);
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---- HOW IT WORKS ---- */
+  .how {
+    padding: clamp(80px, 10vw, 140px) 0;
+  }
+  .how__head {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .how__head h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: 0em;
+    margin: 16px 0 0;
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .how__head h2 em { font-style: italic; color: var(--red); }
+  .how__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .how__step {
+    padding: 40px 32px;
+    border-right: 1px solid var(--line);
+  }
+  .how__step:last-child { border-right: none; }
+  .how__step .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 44px;
+    line-height: 0.9;
+    color: var(--red);
+    margin-bottom: 24px;
+  }
+  .how__step h3 {
+    margin: 0 0 12px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .how__step p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* ---- BECOME A PARTNER ---- */
+  .become {
+    background: var(--ink);
+    color: var(--bg);
+    padding: clamp(80px, 10vw, 140px) 0;
+  }
+  .become__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .become h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    letter-spacing: 0em;
+    margin: 16px 0 24px;
+  }
+  .become h2 em { font-style: italic; color: var(--yellow); }
+  .become p {
+    color: #DCD2E0;
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.5;
+    margin: 0 0 32px;
+    max-width: 42ch;
+  }
+  .become__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .become__list li {
+    background: var(--ink);
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .become__list .k {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--yellow);
+  }
+  .become__list .v {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  .become__list .v em { font-style: italic; color: var(--yellow); }
+
+  /* ---- CTA ---- */
+  .page-cta {
+    padding: clamp(80px, 10vw, 140px) 0;
+    text-align: center;
+  }
+  .page-cta h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.005em;
+    margin: 0 0 24px;
+    max-width: 18ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-cta h2 em { font-style: italic; color: var(--red); }
+  .page-cta .row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .partner__inner, .partner--reverse .partner__inner, .become__inner,
+    .page-hero__inner, .partner__meta { grid-template-columns: 1fr; gap: 32px; }
+    .partner--reverse .partner__copy { order: 1; }
+    .partner--reverse .partner__visual { order: 2; }
+    .how__grid { grid-template-columns: 1fr; }
+    .how__step { border-right: none; border-bottom: 1px solid var(--line); }
+    .how__step:last-child { border-bottom: none; }
+    .page-hero { padding: clamp(40px, 8vw, 70px) 0 clamp(30px, 5vw, 50px); }
+    .page-hero h1 { font-size: clamp(40px, 11vw, 64px); }
+    .partner { padding: clamp(50px, 9vw, 80px) 0; }
+    .partner__copy h2 { font-size: clamp(32px, 9vw, 52px); }
+    .become { padding: clamp(50px, 9vw, 80px) 0; }
+    .become h2 { font-size: clamp(32px, 9vw, 52px); }
+  }
+</style>
+</head>
+<body data-screen-label="04 Partners">
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__mark" href="index.html">
+      <span class="mark__dot" aria-hidden="true"></span>
+      <span class="mark__words">
+        <span class="a">The Human Side</span>
+        <span class="b">An Edenwoods × Elden Heights Initiative</span>
+      </span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a class="is-active" href="partners.html">Partners</a>
+      <a class="site-nav__cta" href="get-involved.html">Join us<span aria-hidden="true">→</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="page-hero__crumbs">
+      <a href="index.html">Home</a> &nbsp;/&nbsp; <span>Partners</span>
+    </div>
+    <div class="page-hero__inner">
+      <h1>Two <em>names</em><br/>on the<br/>masthead.</h1>
+      <p class="page-hero__lede">
+        The Human Side runs because two institutions decided it should — a
+        <em>foundation</em> that holds it, and a <em>school</em> that lives it. Here's
+        what each one brings.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNER 1 — EDENWOODS ===== -->
+<section class="partner">
+  <div class="wrap">
+    <div class="partner__inner">
+      <div class="partner__copy">
+        <div class="partner__role">
+          <span class="num">01</span>
+          <span>—</span>
+          <span>Founding Body</span>
+        </div>
+        <h2>Edenwoods<br/>Eduhub <em>Foundation.</em></h2>
+        <p class="partner__lede">
+          The institutional home of The Human Side — and the reason it can
+          plan in years, not just weeks.
+        </p>
+        <p>
+          Edenwoods Eduhub Foundation works at the intersection of education and
+          social good. It gives The Human Side its legal frame, its accounting,
+          its donor receipts, and — more important than all of those — its
+          patience.
+        </p>
+        <p>
+          The Foundation's view is long. Drives are months in the planning;
+          programmes are designed to outlast any single batch of students.
+          That patience is what lets the initiative be honest about pace.
+        </p>
+        <div class="partner__meta">
+          <div class="pair">
+            <span class="k">Role</span>
+            <span class="v">Founding &amp; holding body</span>
+          </div>
+          <div class="pair">
+            <span class="k">Provides</span>
+            <span class="v">Funding, governance, long-view planning</span>
+          </div>
+          <div class="pair">
+            <span class="k">Established</span>
+            <span class="v">An education-focused foundation</span>
+          </div>
+          <div class="pair">
+            <span class="k">For donors</span>
+            <span class="v">Receipts &amp; quarterly reports</span>
+          </div>
+        </div>
+        <div class="partner__cta">
+          <a class="btn btn--primary" href="get-involved.html#donate">
+            Donate via Edenwoods
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="partner__visual">
+        <div class="partner__visual-image">
+          <image-slot id="partner-edenwoods-img" shape="rounded" radius="4" placeholder="Edenwoods Foundation image"></image-slot>
+        </div>
+        <div class="partner__visual-logo" data-stamp="№ 01 · The Foundation">
+          <img src="assets/edenwoods-logo.png" alt="Edenwoods Eduhub Foundation" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNER 2 — ELDEN HEIGHTS ===== -->
+<section class="partner partner--cream partner--reverse">
+  <div class="wrap">
+    <div class="partner__inner">
+      <div class="partner__visual">
+        <div class="partner__visual-image">
+          <image-slot id="partner-elden-img" shape="rounded" radius="4" placeholder="Elden Heights campus / students photo"></image-slot>
+        </div>
+        <div class="partner__visual-logo" data-stamp="№ 02 · The School">
+          <img src="assets/elden-heights-logo.png" alt="The Elden Heights School" />
+        </div>
+      </div>
+      <div class="partner__copy">
+        <div class="partner__role">
+          <span class="num">02</span>
+          <span>—</span>
+          <span>Partner School</span>
+        </div>
+        <h2>The Elden<br/>Heights <em>School.</em></h2>
+        <p class="partner__lede">
+          The campus where The Human Side actually <em>happens</em> — and the
+          community it draws its hands and hearts from.
+        </p>
+        <p>
+          The Elden Heights School is the partner school of the initiative.
+          Its students start the projects, its faculty stewards them, and its
+          parents and alumni quietly keep them going. The motto on the crest —
+          <em>Towards Eternal Glory</em> — is treated, here, as a question
+          about how we use our time, not a slogan to chant.
+        </p>
+        <p>
+          Saturday meetings happen on school grounds. Drives leave from the
+          front gate. The first sponsors are families inside it. Without the
+          school, there is no initiative.
+        </p>
+        <div class="partner__meta">
+          <div class="pair">
+            <span class="k">Role</span>
+            <span class="v">Partner school &amp; host community</span>
+          </div>
+          <div class="pair">
+            <span class="k">Provides</span>
+            <span class="v">Students, faculty, parents, premises</span>
+          </div>
+          <div class="pair">
+            <span class="k">Motto</span>
+            <span class="v"><em style="font-style: italic; color: var(--red);">Towards Eternal Glory</em></span>
+          </div>
+          <div class="pair">
+            <span class="k">For students</span>
+            <span class="v">Saturday meetings on campus</span>
+          </div>
+        </div>
+        <div class="partner__cta">
+          <a class="btn btn--primary" href="get-involved.html">
+            Join from the school
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how">
+  <div class="wrap">
+    <div class="how__head">
+      <span class="eyebrow">— How the partnership works</span>
+      <h2>One <em>foundation,</em> one school,<br/>and a clear division of care.</h2>
+    </div>
+    <div class="how__grid">
+      <div class="how__step">
+        <div class="num">i.</div>
+        <h3>Edenwoods holds the rails.</h3>
+        <p>Legal entity, funding, accounting, governance. The boring, important spine — handled, so students don't have to.</p>
+      </div>
+      <div class="how__step">
+        <div class="num">ii.</div>
+        <h3>Elden Heights brings the people.</h3>
+        <p>Students lead the projects. Faculty mentor. Parents and alumni open doors. The campus is the room the work happens in.</p>
+      </div>
+      <div class="how__step">
+        <div class="num">iii.</div>
+        <h3>The Human Side does the work.</h3>
+        <p>Drives, conversations, audits, and visits. Quietly, weekly. The initiative is the thing both partners exist to enable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BECOME A PARTNER ===== -->
+<section class="become">
+  <div class="wrap">
+    <div class="become__inner">
+      <div>
+        <span class="eyebrow" style="color: var(--yellow);">— Other partnerships</span>
+        <h2>Want to <em>join</em> the masthead?</h2>
+        <p>
+          As The Human Side grows, we'll partner with schools, NGOs, and
+          professionals already doing the work in our city. If that's you,
+          we'd love to hear what you're working on.
+        </p>
+        <a class="btn btn--red" href="mailto:contact@edenwoods.org">
+          Write to us about partnering
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <ul class="become__list">
+        <li>
+          <span class="k">Schools</span>
+          <span class="v">Sister programmes, joint drives, exchange of practice</span>
+        </li>
+        <li>
+          <span class="k">NGOs</span>
+          <span class="v">Field partners on <em>safety,</em> charity &amp; environment</span>
+        </li>
+        <li>
+          <span class="k">Professionals</span>
+          <span class="v">Facilitators, mentors, doctors, lawyers, social workers</span>
+        </li>
+        <li>
+          <span class="k">Sponsors</span>
+          <span class="v">Families &amp; companies who want to <em>quietly</em> fund a drive</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="page-cta">
+  <div class="wrap">
+    <span class="eyebrow">— Or, the easy thing</span>
+    <h2>Just <em>show up.</em><br/>The rest sorts itself out.</h2>
+    <p class="lede" style="margin: 0 auto; max-width: 50ch;">
+      You don't need to be an institution to make a difference here. Come to a
+      Saturday meeting. Bring a friend. The partners can wait.
+    </p>
+    <div class="row">
+      <a class="btn btn--red" href="get-involved.html">
+        Get involved
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="btn btn--ghost" href="about.html">
+        About the initiative
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__top">
+      <div>
+        <p class="site-footer__tag">The side that <em>still</em> cares.</p>
+        <p style="color:#9B95B0; font-size:13px; max-width: 32ch; margin:0;">
+          An initiative of Edenwoods Eduhub Foundation, in partnership with The Elden Heights School.
+        </p>
+      </div>
+      <div class="site-footer__col">
+        <h4>The Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="get-involved.html">Get Involved</a></li>
+          <li><a href="partners.html">Partners</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h4>Reach Out</h4>
+        <ul>
+          <li><a href="mailto:contact@edenwoods.org">contact@edenwoods.org</a></li>
+          <li><a href="get-involved.html">Volunteer</a></li>
+          <li><a href="get-involved.html">Donate</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 The Human Side</span>
+      <span>Made with care, by hand</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

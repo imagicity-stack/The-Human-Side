@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// ============================================================
+// The Human Side — Firestore security rules
+// ============================================================
+//
+// The volunteer membership flow is now SERVER-VERIFIED. All writes to
+// /members and /counters happen inside Cloud Functions (see
+// functions/index.js) using the Firebase Admin SDK, which bypasses
+// these rules entirely.
+//
+// Therefore the browser gets NO direct access: a member ID can only be
+// issued by the server after it has verified the Razorpay payment
+// signature with the secret key. Locking the client out is exactly what
+// makes the flow trustworthy — there is no client path to forge a paid,
+// "active" membership.
+//
+// If you later add authenticated admin dashboards, grant reads to those
+// specific users here (e.g. via request.auth.token.admin == true).
+// ============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /members/{memberDoc} {
+      allow read, write: if false;
+    }
+    match /counters/{counterDoc} {
+      allow read, write: if false;
+    }
+  }
+}
