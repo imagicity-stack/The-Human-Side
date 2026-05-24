@@ -4,53 +4,28 @@ rules_version = '2';
 // The Human Side — Firestore security rules
 // ============================================================
 //
-// These rules support the client-side volunteer registration flow
-// in get-involved.html:
-//   1. A registration document is created in /members (pending payment).
-//   2. After Razorpay payment, the same document is updated with the
-//      payment id + issued member id, and the /counters/members doc is
-//      incremented inside a transaction to produce THS001, THS002, …
+// The volunteer membership flow is now SERVER-VERIFIED. All writes to
+// /members and /counters happen inside Cloud Functions (see
+// functions/index.js) using the Firebase Admin SDK, which bypasses
+// these rules entirely.
 //
-// SECURITY NOTE — read this:
-// A purely client-side flow cannot *prove* a payment happened, so these
-// rules let anonymous browsers create/update member docs and bump the
-// counter. That is acceptable for a prototype / low-stakes launch, but
-// for production you should verify the Razorpay signature on a server
-// (Cloud Function) and let ONLY that trusted server write 'active'
-// status + memberId. Tighten the rules below accordingly once you have
-// a backend.
+// Therefore the browser gets NO direct access: a member ID can only be
+// issued by the server after it has verified the Razorpay payment
+// signature with the secret key. Locking the client out is exactly what
+// makes the flow trustworthy — there is no client path to forge a paid,
+// "active" membership.
+//
+// If you later add authenticated admin dashboards, grant reads to those
+// specific users here (e.g. via request.auth.token.admin == true).
 // ============================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Volunteer registrations.
     match /members/{memberDoc} {
-      // Anyone may submit a registration…
-      allow create: if request.resource.data.status == 'pending_payment'
-                    && request.resource.data.firstName is string
-                    && request.resource.data.email is string
-                    && request.resource.data.membershipFee == 999;
-
-      // …and may finalise it after payment (attach payment id + member id).
-      allow update: if request.resource.data.status == 'active'
-                    && request.resource.data.memberId is string
-                    && request.resource.data.paymentId is string;
-
-      // Registrations are not publicly readable or deletable from the client.
-      allow read, delete: if false;
+      allow read, write: if false;
     }
-
-    // Sequential member-number counter (THS001, THS002, …).
-    match /counters/members {
-      allow read: if true;
-      // Only ever allow a strict +1 increment from the client.
-      allow write: if request.resource.data.lastNumber is int
-                   && (
-                        !exists(/databases/$(database)/documents/counters/members)
-                        || request.resource.data.lastNumber ==
-                           get(/databases/$(database)/documents/counters/members).data.lastNumber + 1
-                      );
+    match /counters/{counterDoc} {
+      allow read, write: if false;
     }
   }
 }

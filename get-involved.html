@@ -1889,28 +1889,47 @@
 </div>
 
 <!-- ===== REGISTRATION FLOW (Firestore + Razorpay) ===== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import {
-    getFirestore, collection, addDoc, doc,
-    runTransaction, updateDoc, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+<script>
+(function () {
+  /* ============================================================
+     Membership registration — server-verified flow
+     ------------------------------------------------------------
+     The browser NEVER writes to Firestore directly. Instead it calls
+     two Cloud Functions (see /functions/index.js):
 
+       POST {API}/createOrder    → saves the pending registration and
+                                    creates a Razorpay order server-side.
+       POST {API}/verifyPayment  → verifies the Razorpay signature with
+                                    the secret key, then issues the unique
+                                    member ID (THS001…) and marks the
+                                    registration active. Returns { memberId }.
+
+     This guarantees an ID is only ever issued for a genuinely paid,
+     signature-verified order.
+     ============================================================ */
   const env = window.__ENV__ || {};
-  const fbConfig = env.FIREBASE_CONFIG || {};
 
-  // Config is "ready" only when no placeholder REPLACE_… values remain.
-  const firebaseReady = !!fbConfig.projectId && !/REPLACE/i.test(JSON.stringify(fbConfig));
+  // Base URL for the Cloud Functions. Empty string = same origin
+  // (Firebase Hosting rewrites /createOrder & /verifyPayment to the
+  // functions). Set API_BASE_URL in config.js when hosting elsewhere.
+  const API_BASE = (env.API_BASE_URL || '').replace(/\/$/, '');
+
+  // Used as a "backend is configured" proxy + as a checkout fallback key.
   const razorpayReady = !!env.RAZORPAY_KEY_ID && !env.RAZORPAY_KEY_ID.includes('REPLACE');
-  const MEMBERSHIP_FEE = 999; // INR
 
-  let db = null;
-  if (firebaseReady) {
-    try {
-      db = getFirestore(initializeApp(fbConfig));
-    } catch (e) {
-      console.error('Firebase init failed:', e);
+  async function api(path, body) {
+    const res = await fetch(API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    let payload = null;
+    try { payload = await res.json(); } catch (_) { /* non-JSON */ }
+    if (!res.ok) {
+      const msg = (payload && payload.error) || ('Request failed (' + res.status + ')');
+      throw new Error(msg);
     }
+    return payload || {};
   }
 
   const $ = (id) => document.getElementById(id);
@@ -1982,19 +2001,6 @@
     };
   }
 
-  // Atomically increment the members counter and return "THS001" style id.
-  async function issueMemberId() {
-    const counterRef = doc(db, 'counters', 'members');
-    const number = await runTransaction(db, async (tx) => {
-      const snap = await tx.get(counterRef);
-      const last = snap.exists() ? (snap.data().lastNumber || 0) : 0;
-      const next = last + 1;
-      tx.set(counterRef, { lastNumber: next, updatedAt: serverTimestamp() }, { merge: true });
-      return next;
-    });
-    return { number, memberId: 'THS' + String(number).padStart(3, '0') };
-  }
-
   function fullName(d) {
     return (d.firstName + ' ' + d.lastName).trim() || 'Volunteer';
   }
@@ -2013,6 +2019,8 @@
     if (cardName) cardName.textContent = fullName(data);
   }
 
+  const RESET_LABEL = 'Register & pay ₹999';
+
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -2020,12 +2028,8 @@
 
       if (!form.reportValidity()) return;
 
-      if (!firebaseReady || !db) {
-        showError('Firebase isn’t configured yet. Add your FIREBASE_CONFIG in assets/config.js to enable registration.');
-        return;
-      }
       if (!razorpayReady) {
-        showError('Razorpay isn’t configured yet. Add your RAZORPAY_KEY_ID in assets/config.js to enable payment.');
+        showError('Payment isn’t configured yet. Add your RAZORPAY_KEY_ID in assets/config.js and deploy the Cloud Functions to enable registration.');
         return;
       }
       if (typeof Razorpay === 'undefined') {
@@ -2035,33 +2039,25 @@
 
       const data = collect();
 
-      // 1) Save the registration first (status: pending_payment).
+      // 1) Ask the server to save the registration + create a Razorpay order.
       setBusy(true, 'Saving…');
-      let docRef;
+      let order;
       try {
-        docRef = await addDoc(collection(db, 'members'), {
-          ...data,
-          membershipFee: MEMBERSHIP_FEE,
-          currency: env.CURRENCY || 'INR',
-          status: 'pending_payment',
-          memberId: null,
-          paymentId: null,
-          createdAt: serverTimestamp(),
-          source: 'get-involved.html'
-        });
+        order = await api('/createOrder', data);
       } catch (err) {
         console.error(err);
-        setBusy(false, 'Register & pay ₹999');
-        showError('Could not save your details (' + (err.code || err.message) + '). Please try again.');
+        setBusy(false, RESET_LABEL);
+        showError('Could not start your registration: ' + err.message);
         return;
       }
 
-      // 2) Take the one-time ₹999 fee via Razorpay.
+      // 2) Open Razorpay checkout against the server-created order.
       setBusy(true, 'Opening payment…');
       const options = {
-        key:         env.RAZORPAY_KEY_ID,
-        amount:      MEMBERSHIP_FEE * 100, // paise
-        currency:    env.CURRENCY || 'INR',
+        key:         order.keyId || env.RAZORPAY_KEY_ID,
+        order_id:    order.orderId,
+        amount:      order.amount,            // paise, echoed by the server
+        currency:    order.currency || env.CURRENCY || 'INR',
         name:        env.ORG_NAME || 'The Human Side',
         description: 'Volunteer Membership · One-time · ₹999',
         image:       env.ORG_LOGO || 'assets/logo-icon.png',
@@ -2073,61 +2069,45 @@
         },
         notes: {
           type:           'volunteer-membership',
-          registrationId: docRef.id,
-          initiative:     'The Human Side',
-          partner:        'Edenwoods Eduhub Foundation'
+          registrationId: order.registrationId,
+          initiative:     'The Human Side'
         },
         handler: async function (response) {
-          // 3) On payment success — issue a unique member ID and store it.
-          setBusy(true, 'Issuing your ID…');
+          // 3) Server verifies the signature, then issues the member ID.
+          setBusy(true, 'Verifying payment…');
           try {
-            const { memberId, number } = await issueMemberId();
-            await updateDoc(docRef, {
-              status: 'active',
-              paymentId: response.razorpay_payment_id,
-              memberId,
-              memberNumber: number,
-              paidAt: serverTimestamp()
+            const { memberId } = await api('/verifyPayment', {
+              registrationId:     order.registrationId,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id:   response.razorpay_order_id,
+              razorpay_signature:  response.razorpay_signature
             });
-            if (env.PAYMENT_WEBHOOK_URL) {
-              fetch(env.PAYMENT_WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  type: 'membership',
-                  registrationId: docRef.id,
-                  memberId,
-                  payment_id: response.razorpay_payment_id,
-                  amount: MEMBERSHIP_FEE,
-                  currency: env.CURRENCY || 'INR'
-                })
-              }).catch(() => {});
-            }
-            setBusy(false, 'Register & pay ₹999');
+            setBusy(false, RESET_LABEL);
             showSuccess(memberId, data);
           } catch (err) {
             console.error(err);
-            setBusy(false, 'Register & pay ₹999');
+            setBusy(false, RESET_LABEL);
             showError(
               'Your payment went through (ID ' + response.razorpay_payment_id +
-              ') but we couldn’t issue your member ID automatically. ' +
-              'Please email contact@edenwoods.org and we’ll sort it out right away.'
+              ') but verification did not complete: ' + err.message +
+              ' Please email contact@edenwoods.org with this payment ID and we’ll sort it out.'
             );
           }
         },
         modal: {
-          ondismiss: function () { setBusy(false, 'Register & pay ₹999'); }
+          ondismiss: function () { setBusy(false, RESET_LABEL); }
         }
       };
 
       const rzp = new Razorpay(options);
       rzp.on('payment.failed', function (resp) {
-        setBusy(false, 'Register & pay ₹999');
+        setBusy(false, RESET_LABEL);
         showError('Payment could not be completed. ' + (resp.error && resp.error.description || ''));
       });
       rzp.open();
     });
   }
+})();
 </script>
 
 </body>

@@ -33,22 +33,23 @@ window.__ENV__ = {
   THEME_COLOR: "#7C3F98",
 
   /* ----------------------------------------------------------
-     Firebase (Cloud Firestore) — stores volunteer registrations
-     and the issued membership IDs (THS001, THS002 …).
+     Membership backend (Cloud Functions) base URL.
 
-     These values are NOT secrets — the Firebase web config is
-     meant to be embedded in the client. Real protection comes
-     from Firestore Security Rules, which you configure in the
-     Firebase console. Replace every REPLACE_… below with values
-     from: Firebase console → Project settings → Your apps →
-     SDK setup and configuration → Config.
+     The browser calls {API_BASE_URL}/createOrder and
+     {API_BASE_URL}/verifyPayment to register a volunteer, take the
+     ₹999 fee, and have the SERVER verify the Razorpay signature and
+     issue the unique member ID (THS001…). Firestore is written only
+     by the server (Admin SDK) — never by the browser.
+
+     • Leave EMPTY ("") if you deploy the static site AND the
+       functions to the same Firebase project — firebase.json rewrites
+       /createOrder and /verifyPayment to the functions on the same
+       origin (no CORS needed).
+     • Otherwise set the full base, e.g.
+       "https://us-central1-your-project.cloudfunctions.net".
+
+     The Razorpay SECRET KEY lives only on the server — see
+     functions/index.js. It must never appear in this file.
   ---------------------------------------------------------- */
-  FIREBASE_CONFIG: {
-    apiKey:            "REPLACE_WITH_FIREBASE_API_KEY",
-    authDomain:        "REPLACE_PROJECT.firebaseapp.com",
-    projectId:         "REPLACE_PROJECT_ID",
-    storageBucket:     "REPLACE_PROJECT.appspot.com",
-    messagingSenderId: "REPLACE_SENDER_ID",
-    appId:             "REPLACE_APP_ID"
-  }
+  API_BASE_URL: ""
 };
