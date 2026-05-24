@@ -1,0 +1,37 @@
+/* Legal pages — scoped to .pg-legal */
+.pg-legal {
+  .legal-hero {
+    padding: clamp(50px, 7vw, 90px) 0 clamp(24px, 3vw, 36px);
+    border-bottom: 1px solid var(--line);
+  }
+  .legal-crumbs {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); display: flex; gap: 10px; margin-bottom: 24px;
+  }
+  .legal-crumbs a:hover { color: var(--red); }
+  .legal-hero h1 {
+    font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.02; letter-spacing: -0.01em; margin: 0; max-width: 18ch;
+  }
+  .legal-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+
+  .legal-body { padding: clamp(40px, 6vw, 72px) 0 clamp(60px, 8vw, 100px); }
+  .legal-prose { max-width: 760px; }
+  .legal-prose h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.4vw, 30px); margin: 40px 0 12px; letter-spacing: -0.005em; }
+  .legal-prose h2:first-child { margin-top: 0; }
+  .legal-prose h3 { font-family: var(--serif); font-weight: 600; font-size: 18px; margin: 24px 0 8px; }
+  .legal-prose p { color: var(--ink-soft); margin: 0 0 16px; line-height: 1.7; }
+  .legal-prose ul { color: var(--ink-soft); margin: 0 0 16px; padding-left: 22px; line-height: 1.7; }
+  .legal-prose li { margin-bottom: 8px; }
+  .legal-prose a { color: var(--red); text-decoration: underline; }
+  .legal-prose strong { color: var(--ink); }
+  .legal-note {
+    background: var(--bg-deep); border: 1px solid var(--line); border-radius: 8px;
+    padding: 16px 20px; font-size: 14px; color: var(--ink-soft); margin: 0 0 28px; line-height: 1.6;
+  }
+  .legal-contact {
+    border: 1px solid var(--line); border-radius: 8px; padding: 24px 26px; margin-top: 8px;
+    font-family: var(--serif); font-size: 17px; color: var(--ink); line-height: 1.7;
+  }
+  .legal-contact .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; }
+}
