@@ -33,23 +33,25 @@ window.__ENV__ = {
   THEME_COLOR: "#7C3F98",
 
   /* ----------------------------------------------------------
-     Membership backend (Cloud Functions) base URL.
+     Membership backend (Firebase Cloud Functions) base URL.
 
-     The browser calls {API_BASE_URL}/createOrder and
-     {API_BASE_URL}/verifyPayment to register a volunteer, take the
-     ₹999 fee, and have the SERVER verify the Razorpay signature and
-     issue the unique member ID (THS001…). Firestore is written only
-     by the server (Admin SDK) — never by the browser.
+     This static site is hosted on Vercel while the backend runs on
+     Firebase Cloud Functions, so this is a CROSS-ORIGIN call and must
+     be the absolute base URL of your deployed functions. The browser
+     calls {API_BASE_URL}/createOrder and {API_BASE_URL}/verifyPayment;
+     the SERVER then verifies the Razorpay signature and issues the
+     unique member ID (THS001…). Firestore is written only by the
+     server (Admin SDK) — never by the browser.
 
-     • Leave EMPTY ("") if you deploy the static site AND the
-       functions to the same Firebase project — firebase.json rewrites
-       /createOrder and /verifyPayment to the functions on the same
-       origin (no CORS needed).
-     • Otherwise set the full base, e.g.
-       "https://us-central1-your-project.cloudfunctions.net".
+     After `firebase deploy --only functions`, the CLI prints each URL.
+     Take the part BEFORE "/createOrder" and put it here. For gen-2
+     functions the base looks like:
+       https://<region>-<project-id>.cloudfunctions.net
+     e.g. https://us-central1-the-human-side.cloudfunctions.net
 
-     The Razorpay SECRET KEY lives only on the server — see
-     functions/index.js. It must never appear in this file.
+     The Razorpay public key id above is safe in the browser. The
+     Razorpay SECRET stays only in Firebase (functions:secrets:set) —
+     it must never appear in this file.
   ---------------------------------------------------------- */
-  API_BASE_URL: ""
+  API_BASE_URL: "https://REGION-PROJECT_ID.cloudfunctions.net"
 };

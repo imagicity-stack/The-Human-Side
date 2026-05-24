@@ -18,19 +18,26 @@
        transaction and marks the registration active. Returns { memberId }.
 
    ------------------------------------------------------------
+   DEPLOYMENT: the static site is hosted on Vercel; this backend runs on
+   Firebase Cloud Functions. The browser calls these endpoints
+   cross-origin (CORS enabled below).
+
    SETUP (one time):
      1. cd functions && npm install
-     2. Set the Razorpay credentials as secrets:
+     2. Set the Razorpay credentials as Firebase secrets (NOT Vercel
+        env vars):
           firebase functions:secrets:set RAZORPAY_KEY_ID
           firebase functions:secrets:set RAZORPAY_KEY_SECRET
         (Use your rzp_test_… / rzp_live_… key id and its secret.)
      3. Deploy:
           firebase deploy --only functions,firestore:rules
-        Deploy hosting too (firebase deploy) to get same-origin
-        /createOrder and /verifyPayment via the rewrites in firebase.json.
+     4. Copy the printed function base URL into assets/config.js
+        (API_BASE_URL), and put the public RAZORPAY_KEY_ID there too so
+        the browser can render the checkout sheet.
 
-   The same RAZORPAY_KEY_ID must also be set in assets/config.js so the
-   browser can render the checkout sheet. The SECRET stays server-only.
+   Firebase Admin uses the runtime's default credentials here, so NO
+   service-account env vars are needed. The Razorpay SECRET stays
+   server-only — it never reaches the browser or any committed file.
    ============================================================ */
 
 const { onRequest } = require("firebase-functions/v2/https");
@@ -49,8 +56,10 @@ const RAZORPAY_KEY_SECRET = defineSecret("RAZORPAY_KEY_SECRET");
 const MEMBERSHIP_FEE = 999; // INR
 const CURRENCY = "INR";
 
-// Restrict to your real domain(s) in production, e.g.
-// ["https://thehumanside.org", "https://www.thehumanside.org"].
+// The site is served from Vercel, so this is a cross-origin call.
+// `true` allows any origin (fine while setting up). Before launch, lock
+// it to your Vercel domain(s), e.g.
+//   const CORS = ["https://the-human-side.vercel.app", "https://thehumanside.org"];
 const CORS = true;
 
 // Whitelist + length-cap the fields we accept from the browser so a
