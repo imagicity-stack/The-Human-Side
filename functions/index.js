@@ -29,12 +29,17 @@ const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret, defineString } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
+const { getFirestore } = require("firebase-admin/firestore");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
+// Firestore database id. This project uses a NAMED database ("the-human-side"),
+// not the "(default)" one, so the Admin SDK is pointed at it explicitly.
+const DATABASE_ID = "the-human-side";
+
 admin.initializeApp();
-const db = admin.firestore();
+const db = getFirestore(admin.app(), DATABASE_ID);
 const FieldValue = admin.firestore.FieldValue;
 
 // --- secrets ---
