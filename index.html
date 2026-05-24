@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>The Human Side — The Side That Still Cares</title>
 <link rel="stylesheet" href="assets/shared.css" />
-<script src="assets/image-slot.js"></script>
 <style>
   /* ============================================================
      Home — Editorial Quiet
@@ -132,6 +131,7 @@
     aspect-ratio: 3 / 4;
     overflow: hidden;
     border-radius: 6px;
+    background: var(--bg-deep);
     z-index: 2;
     box-shadow:
       0 30px 60px -20px color-mix(in oklab, var(--ink) 35%, transparent),
@@ -149,25 +149,11 @@
     opacity: 0.5;
     z-index: -1;
   }
-  .hero-v1__mark image-slot {
+  .hero-v1__mark img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
-  /* secondary small image tile, offset */
-  .hero-v1__mark-mini {
-    position: absolute;
-    top: clamp(200px, 22vw, 320px);
-    right: clamp(180px, 20vw, 300px);
-    width: clamp(120px, 13vw, 180px);
-    aspect-ratio: 1;
-    border-radius: 999px;
-    overflow: hidden;
-    z-index: 2;
-    box-shadow:
-      0 20px 40px -15px color-mix(in oklab, var(--ink) 40%, transparent),
-      0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent);
-  }
-  .hero-v1__mark-mini image-slot { width: 100%; height: 100%; }
 
   /* manifesto strip */
   .manifesto {
@@ -409,6 +395,7 @@
     position: relative;
     border-radius: 6px;
     overflow: hidden;
+    background: var(--bg-deep);
     box-shadow:
       0 20px 50px -25px color-mix(in oklab, var(--ink) 40%, transparent),
       0 0 0 1px color-mix(in oklab, var(--ink) 7%, transparent);
@@ -417,7 +404,7 @@
   .gallery-band__tile:nth-child(2) { aspect-ratio: 4/5; transform: translateY(-10px); }
   .gallery-band__tile:nth-child(3) { aspect-ratio: 3/4; transform: translateY(30px); }
   .gallery-band__tile:nth-child(4) { aspect-ratio: 4/5; transform: translateY(0); }
-  .gallery-band__tile image-slot { width: 100%; height: 100%; }
+  .gallery-band__tile img { width: 100%; height: 100%; object-fit: cover; }
   .gallery-band__tile.is-tinted::after {
     content: "";
     position: absolute;
@@ -456,7 +443,7 @@
       grid-template-columns: 1fr;
       gap: 32px;
     }
-    .hero-v1__mark, .hero-v1__mark-mini { display: none; }
+    .hero-v1__mark { display: none; }
     .gallery-band__tile { transform: none !important; aspect-ratio: 4/3 !important; }
     .gallery-band { padding: clamp(40px, 8vw, 70px) 0; }
     .manifesto { padding: clamp(50px, 9vw, 90px) 0; }
@@ -511,10 +498,7 @@
 
       <!-- decorative corner image -->
       <div class="hero-v1__mark">
-        <image-slot id="v1-hero" shape="rounded" radius="4" placeholder="Drop a hero image — drives, students, a portrait" style="width:100%;height:100%;"></image-slot>
-      </div>
-      <div class="hero-v1__mark-mini">
-        <image-slot id="v1-hero-mini" shape="circle" placeholder="A portrait" style="width:103px;height:90px;"></image-slot>
+        <img src="assets/images/hero.jpg" alt="The Human Side — volunteers at a drive" loading="lazy" />
       </div>
 
       <div class="hero-v1__eyebrow">
@@ -577,19 +561,19 @@
     </div>
     <div class="gallery-band__grid">
       <div class="gallery-band__tile is-tinted">
-        <image-slot id="gb-1" shape="rounded" radius="4" placeholder="Drive day — sorting books" style="width:100%;height:100%;"></image-slot>
+        <img src="assets/images/field-1.jpg" alt="Drive day — sorting books" loading="lazy" />
         <span class="gallery-band__caption">Drive — Saturday morning</span>
       </div>
       <div class="gallery-band__tile is-tinted">
-        <image-slot id="gb-2" shape="rounded" radius="4" placeholder="Tree planting — soft mud, smiles" style="width:100%;height:100%;"></image-slot>
+        <img src="assets/images/field-2.jpg" alt="Tree planting" loading="lazy" />
         <span class="gallery-band__caption">Plant — campus south</span>
       </div>
       <div class="gallery-band__tile is-tinted">
-        <image-slot id="gb-3" shape="rounded" radius="4" placeholder="Workshop circle — conversation" style="width:100%;height:100%;"></image-slot>
+        <img src="assets/images/field-3.jpg" alt="Workshop circle — conversation" loading="lazy" />
         <span class="gallery-band__caption">Listen — workshop No. 04</span>
       </div>
       <div class="gallery-band__tile is-tinted">
-        <image-slot id="gb-4" shape="rounded" radius="4" placeholder="Old age home visit" style="width:100%;height:100%;"></image-slot>
+        <img src="assets/images/field-4.jpg" alt="Old age home visit" loading="lazy" />
         <span class="gallery-band__caption">Visit — Tuesdays</span>
       </div>
     </div>
