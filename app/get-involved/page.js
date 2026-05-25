@@ -11,11 +11,26 @@ const RZP_KEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
 const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
 async function postJSON(url, body) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body || {}),
-  });
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 20000);
+  let res;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+      signal: ctrl.signal,
+    });
+  } catch (e) {
+    clearTimeout(timer);
+    if (e.name === "AbortError") {
+      throw new Error(
+        "The server didn't respond. Check that the Razorpay + Firebase env vars are set in Vercel and that the 'the-human-side' Firestore database exists, then redeploy."
+      );
+    }
+    throw new Error("Network error — could not reach the server.");
+  }
+  clearTimeout(timer);
   let data = null;
   try { data = await res.json(); } catch (_) {}
   if (!res.ok) throw new Error((data && data.error) || `Request failed (${res.status})`);
@@ -86,40 +101,51 @@ export default function GetInvolvedPage() {
     }
 
     setBusy("Opening payment…");
-    const rzp = new window.Razorpay({
-      key: order.keyId || RZP_KEY,
-      order_id: order.orderId,
-      amount: order.amount,
-      currency: order.currency || "INR",
-      name: "The Human Side",
-      description: "Volunteer Membership · One-time · " + fmt(fee),
-      image: "/assets/logo-icon.png",
-      theme: { color: "#7C3F98" },
-      prefill: { name, email: data.email, contact: data.phone },
-      notes: { type: "volunteer-membership", registrationId: order.registrationId, initiative: "The Human Side" },
-      handler: async (resp) => {
-        setBusy("Verifying payment…");
-        try {
-          const { memberId } = await postJSON("/api/verifyPayment", {
-            registrationId: order.registrationId,
-            razorpay_payment_id: resp.razorpay_payment_id,
-            razorpay_order_id: resp.razorpay_order_id,
-            razorpay_signature: resp.razorpay_signature,
-          });
-          setBusy(null);
-          setSuccess({ memberId, name });
-        } catch (err) {
-          setBusy(null);
-          setError(`Your payment went through (ID ${resp.razorpay_payment_id}) but verification did not complete: ${err.message} Please email contact@edenwoods.org with this payment ID.`);
-        }
-      },
-      modal: { ondismiss: () => setBusy(null) },
-    });
-    rzp.on("payment.failed", (r) => {
+    const key = order.keyId || RZP_KEY;
+    if (!key) {
       setBusy(null);
-      setError("Payment could not be completed. " + ((r.error && r.error.description) || ""));
-    });
-    rzp.open();
+      setError("Razorpay key is missing. Set RAZORPAY_KEY_ID and NEXT_PUBLIC_RAZORPAY_KEY_ID in Vercel, then redeploy.");
+      return;
+    }
+    try {
+      const rzp = new window.Razorpay({
+        key,
+        order_id: order.orderId,
+        amount: order.amount,
+        currency: order.currency || "INR",
+        name: "The Human Side",
+        description: "Volunteer Membership · One-time · " + fmt(fee),
+        image: "/assets/logo-icon.png",
+        theme: { color: "#7C3F98" },
+        prefill: { name, email: data.email, contact: data.phone },
+        notes: { type: "volunteer-membership", registrationId: order.registrationId, initiative: "The Human Side" },
+        handler: async (resp) => {
+          setBusy("Verifying payment…");
+          try {
+            const { memberId } = await postJSON("/api/verifyPayment", {
+              registrationId: order.registrationId,
+              razorpay_payment_id: resp.razorpay_payment_id,
+              razorpay_order_id: resp.razorpay_order_id,
+              razorpay_signature: resp.razorpay_signature,
+            });
+            setBusy(null);
+            setSuccess({ memberId, name });
+          } catch (err) {
+            setBusy(null);
+            setError(`Your payment went through (ID ${resp.razorpay_payment_id}) but verification did not complete: ${err.message} Please email contact@edenwoods.org with this payment ID.`);
+          }
+        },
+        modal: { ondismiss: () => setBusy(null) },
+      });
+      rzp.on("payment.failed", (r) => {
+        setBusy(null);
+        setError("Payment could not be completed. " + ((r.error && r.error.description) || ""));
+      });
+      rzp.open();
+    } catch (err) {
+      setBusy(null);
+      setError("Could not open the payment window: " + (err.message || err));
+    }
   }
 
   function handleDonate() {
