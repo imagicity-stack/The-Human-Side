@@ -25,6 +25,8 @@ export default function AdminPage() {
   const [totalCollected, setTotalCollected] = useState(0);
   const [search, setSearch] = useState("");
   const [paySearch, setPaySearch] = useState("");
+  const [backfilling, setBackfilling] = useState(false);
+  const [backfillMsg, setBackfillMsg] = useState(null);
   const [feeInput, setFeeInput] = useState("");
   const [feeMsg, setFeeMsg] = useState(null);
   const [dataErr, setDataErr] = useState("");
@@ -146,6 +148,20 @@ export default function AdminPage() {
       setFeeMsg({ ok: true, text: "Fee updated to " + fmtINR(amount) + "." });
       setCurrentFee(amount);
     } catch (err) { setFeeMsg({ ok: false, text: "Could not update: " + err.message }); }
+  }
+
+  async function onBackfill() {
+    setBackfilling(true);
+    setBackfillMsg(null);
+    try {
+      const r = await adminApi("/api/adminBackfillPayments", {});
+      setBackfillMsg({ ok: true, text: `Backfill complete — ${r.created} record(s) created, ${r.skipped} already present.` });
+      await loadData();
+    } catch (err) {
+      setBackfillMsg({ ok: false, text: err.message });
+    } finally {
+      setBackfilling(false);
+    }
   }
 
   const filtered = members.filter((m) => {
@@ -279,8 +295,14 @@ export default function AdminPage() {
           <div className="panel">
             <div className="panel__head">
               <h2>Payments &amp; transactions</h2>
-              <span className="tot">{payments.length} transactions · collected <b>{fmtINR(totalCollected)}</b></span>
+              <span className="tot">
+                {payments.length} transactions · collected <b>{fmtINR(totalCollected)}</b>
+                <button className="btn-dereg" style={{ marginLeft: 14 }} onClick={onBackfill} disabled={backfilling}>
+                  {backfilling ? "Backfilling…" : "Backfill past payments"}
+                </button>
+              </span>
             </div>
+            {backfillMsg && <div className={"msg " + (backfillMsg.ok ? "ok" : "err")}>{backfillMsg.text}</div>}
             <div className="table-tools">
               <input type="search" placeholder="Search transaction id, member id, name…" value={paySearch} onChange={(e) => setPaySearch(e.target.value)} />
             </div>
