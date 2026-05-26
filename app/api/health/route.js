@@ -1,43 +1,59 @@
 import { NextResponse } from "next/server";
+import Razorpay from "razorpay";
 import { getDb } from "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Visit /api/health in a browser to check the backend without dev tools.
-// Reports which env vars are present (true/false, never the values) and
-// whether the server can actually reach the named Firestore database.
+const timeout = (ms, msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms));
+
 export async function GET() {
+  const keyId = (process.env.RAZORPAY_KEY_ID || "").trim();
+  const npKeyId = (process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "").trim();
+
   const env = {
-    RAZORPAY_KEY_ID: !!process.env.RAZORPAY_KEY_ID,
-    RAZORPAY_KEY_SECRET: !!process.env.RAZORPAY_KEY_SECRET,
-    NEXT_PUBLIC_RAZORPAY_KEY_ID: !!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    RAZORPAY_KEY_ID_value: keyId,
+    RAZORPAY_KEY_ID_length: keyId.length,
+    NEXT_PUBLIC_RAZORPAY_KEY_ID_value: npKeyId,
+    keys_match: keyId === npKeyId,
+    RAZORPAY_mode: keyId.startsWith("rzp_live") ? "live" : keyId.startsWith("rzp_test") ? "test" : "unknown",
+    RAZORPAY_KEY_SECRET_present: !!process.env.RAZORPAY_KEY_SECRET,
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || null,
     FIREBASE_CLIENT_EMAIL: !!process.env.FIREBASE_CLIENT_EMAIL,
-    FIREBASE_PRIVATE_KEY_present: !!process.env.FIREBASE_PRIVATE_KEY,
     FIREBASE_PRIVATE_KEY_looks_valid:
-      !!process.env.FIREBASE_PRIVATE_KEY &&
-      process.env.FIREBASE_PRIVATE_KEY.includes("BEGIN PRIVATE KEY"),
+      !!process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_PRIVATE_KEY.includes("BEGIN PRIVATE KEY"),
     FIRESTORE_DATABASE_ID: process.env.FIRESTORE_DATABASE_ID || "the-human-side",
   };
 
-  let firestore = "unknown";
-  let firestoreError = null;
+  // Firestore reachability
+  let firestore = "unknown", firestoreError = null;
   try {
     await Promise.race([
       getDb().collection("settings").doc("registration").get(),
-      new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error("Firestore timed out — the database is unreachable. Usually the credentials are wrong or the database id does not exist.")),
-          8000
-        )
-      ),
+      timeout(8000, "Firestore timed out — database unreachable."),
     ]);
     firestore = "ok";
+  } catch (e) { firestore = "error"; firestoreError = e.message; }
+
+  // Razorpay order creation (this is exactly what /api/createOrder does)
+  let razorpay = "unknown", razorpayError = null, testOrderId = null;
+  try {
+    const rzp = new Razorpay({ key_id: keyId, key_secret: (process.env.RAZORPAY_KEY_SECRET || "").trim() });
+    const order = await Promise.race([
+      rzp.orders.create({ amount: 100, currency: "INR", receipt: "healthcheck" }),
+      timeout(8000, "Razorpay timed out."),
+    ]);
+    testOrderId = order.id;
+    razorpay = "ok";
   } catch (e) {
-    firestore = "error";
-    firestoreError = e.message;
+    razorpay = "error";
+    razorpayError = (e && e.error && e.error.description) || (e && e.message) || String(e);
   }
 
-  return NextResponse.json({ ok: firestore === "ok", firestore, firestoreError, env });
+  return NextResponse.json({
+    ok: firestore === "ok" && razorpay === "ok",
+    firestore, firestoreError,
+    razorpay, razorpayError, testOrderId,
+    env,
+  });
 }

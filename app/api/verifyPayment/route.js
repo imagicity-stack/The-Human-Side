@@ -13,7 +13,7 @@ export async function POST(req) {
     }
 
     const expected = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .createHmac("sha256", (process.env.RAZORPAY_KEY_SECRET || "").trim())
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
     const a = Buffer.from(razorpay_signature);

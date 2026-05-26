@@ -29,9 +29,10 @@ export async function POST(req) {
       source: "get-involved",
     });
 
+    const keyId = (process.env.RAZORPAY_KEY_ID || "").trim();
     const rzp = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id: keyId,
+      key_secret: (process.env.RAZORPAY_KEY_SECRET || "").trim(),
     });
     const order = await rzp.orders.create({
       amount: fee * 100,
@@ -47,7 +48,7 @@ export async function POST(req) {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      keyId: process.env.RAZORPAY_KEY_ID,
+      keyId,
       fee,
     });
   } catch (err) {
