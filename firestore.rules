@@ -4,27 +4,26 @@ rules_version = '2';
 // The Human Side — Firestore security rules
 // ============================================================
 //
-// The volunteer membership flow is now SERVER-VERIFIED. All writes to
-// /members and /counters happen inside Cloud Functions (see
-// functions/index.js) using the Firebase Admin SDK, which bypasses
-// these rules entirely.
+// ALL data access happens server-side via the Firebase Admin SDK
+// (Next.js API routes on Vercel), which BYPASSES these rules. The
+// browser never reads or writes Firestore directly — its only Firebase
+// use is Authentication for the admin login, which these rules don't
+// govern.
 //
-// Therefore the browser gets NO direct access: a member ID can only be
-// issued by the server after it has verified the Razorpay payment
-// signature with the secret key. Locking the client out is exactly what
-// makes the flow trustworthy — there is no client path to forge a paid,
-// "active" membership.
+// Therefore the correct, safest posture is to deny every direct client
+// read/write to every collection (members, counters, settings, payments,
+// and anything added later). A member ID, a payment record, or a fee
+// change can only ever be created by the trusted server after it has
+// verified the Razorpay signature / the admin's identity.
 //
-// If you later add authenticated admin dashboards, grant reads to those
-// specific users here (e.g. via request.auth.token.admin == true).
+// NOTE: these apply to the database this deploy targets. firebase.json
+// sets "database": "the-human-side", so deploy with:
+//   firebase deploy --only firestore:rules
 // ============================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /members/{memberDoc} {
-      allow read, write: if false;
-    }
-    match /counters/{counterDoc} {
+    match /{document=**} {
       allow read, write: if false;
     }
   }
