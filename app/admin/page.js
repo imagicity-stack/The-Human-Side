@@ -21,13 +21,18 @@ export default function AdminPage() {
   const [stats, setStats] = useState(null);
   const [currentFee, setCurrentFee] = useState(null);
   const [members, setMembers] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [totalCollected, setTotalCollected] = useState(0);
   const [search, setSearch] = useState("");
+  const [paySearch, setPaySearch] = useState("");
+  const [backfilling, setBackfilling] = useState(false);
+  const [backfillMsg, setBackfillMsg] = useState(null);
   const [feeInput, setFeeInput] = useState("");
   const [feeMsg, setFeeMsg] = useState(null);
   const [dataErr, setDataErr] = useState("");
   const [chartReady, setChartReady] = useState(false);
 
-  const canvases = { month: useRef(null), role: useRef(null), interest: useRef(null), tshirt: useRef(null) };
+  const canvases = { month: useRef(null), revenue: useRef(null), role: useRef(null), city: useRef(null), interest: useRef(null), tshirt: useRef(null) };
   const chartObjs = useRef({});
 
   useEffect(() => {
@@ -69,6 +74,11 @@ export default function AdminPage() {
       const { members } = await adminApi("/api/adminListMembers", {});
       setMembers(members);
     } catch (err) { setDataErr((p) => p || "Could not load members: " + err.message); }
+    try {
+      const { payments, totalCollected } = await adminApi("/api/adminListPayments", {});
+      setPayments(payments || []);
+      setTotalCollected(totalCollected || 0);
+    } catch (err) { setDataErr((p) => p || "Could not load payments: " + err.message); }
   }
 
   // (re)draw charts whenever stats or Chart.js readiness changes
@@ -100,7 +110,10 @@ export default function AdminPage() {
     };
     const months = entries(stats.byMonth).sort((a, b) => a[0].localeCompare(b[0]));
     draw(canvases.month, "bar", months);
+    const rev = Object.entries(stats.revenueByMonth || {}).sort((a, b) => a[0].localeCompare(b[0]));
+    draw(canvases.revenue, "bar", rev);
     draw(canvases.role, "doughnut", entries(stats.byRole));
+    draw(canvases.city, "bar", entries(stats.byCity).slice(0, 10), { indexAxis: "y" });
     draw(canvases.interest, "bar", entries(stats.byInterest), { indexAxis: "y" });
     draw(canvases.tshirt, "doughnut", entries(stats.byTshirt));
     return () => { Object.values(chartObjs.current).forEach((c) => c.destroy()); chartObjs.current = {}; };
@@ -137,10 +150,30 @@ export default function AdminPage() {
     } catch (err) { setFeeMsg({ ok: false, text: "Could not update: " + err.message }); }
   }
 
+  async function onBackfill() {
+    setBackfilling(true);
+    setBackfillMsg(null);
+    try {
+      const r = await adminApi("/api/adminBackfillPayments", {});
+      setBackfillMsg({ ok: true, text: `Backfill complete — ${r.created} record(s) created, ${r.skipped} already present.` });
+      await loadData();
+    } catch (err) {
+      setBackfillMsg({ ok: false, text: err.message });
+    } finally {
+      setBackfilling(false);
+    }
+  }
+
   const filtered = members.filter((m) => {
     const q = search.toLowerCase();
     if (!q) return true;
     return [m.memberId, m.firstName, m.lastName, m.email, m.city, m.role].filter(Boolean).join(" ").toLowerCase().includes(q);
+  });
+
+  const payFiltered = payments.filter((p) => {
+    const q = paySearch.toLowerCase();
+    if (!q) return true;
+    return [p.paymentId, p.orderId, p.memberId, p.name, p.email].filter(Boolean).join(" ").toLowerCase().includes(q);
   });
 
   return (
@@ -190,10 +223,12 @@ export default function AdminPage() {
         <main className="admin-wrap">
           <div className="cards">
             <div className="card"><div className="k">Active members</div><div className="v">{stats ? stats.active : "—"}</div></div>
+            <div className="card"><div className="k">New this month</div><div className="v">{stats ? stats.thisMonth : "—"}</div></div>
             <div className="card"><div className="k">Pending</div><div className="v">{stats ? stats.pending : "—"}</div></div>
             <div className="card"><div className="k">Deregistered</div><div className="v">{stats ? stats.deregistered : "—"}</div></div>
-            <div className="card"><div className="k">Total</div><div className="v">{stats ? stats.total : "—"}</div></div>
-            <div className="card accent"><div className="k">Revenue</div><div className="v">{stats ? fmtINR(stats.revenue) : "—"}</div></div>
+            <div className="card"><div className="k">Transactions</div><div className="v">{payments.length}</div></div>
+            <div className="card accent"><div className="k">Revenue (total)</div><div className="v">{stats ? fmtINR(stats.revenue) : "—"}</div></div>
+            <div className="card accent"><div className="k">Revenue this month</div><div className="v">{stats ? fmtINR(stats.thisMonthRevenue) : "—"}</div></div>
           </div>
 
           <div className="panel">
@@ -211,7 +246,11 @@ export default function AdminPage() {
 
           <div className="charts" style={{ marginBottom: 24 }}>
             <div className="panel"><h2>Registrations by month</h2><canvas id="ch-month" ref={canvases.month} height={120}></canvas></div>
+            <div className="panel"><h2>Revenue by month (₹)</h2><canvas id="ch-revenue" ref={canvases.revenue} height={120}></canvas></div>
+          </div>
+          <div className="charts-2">
             <div className="panel"><h2>By role</h2><canvas id="ch-role" ref={canvases.role} height={120}></canvas></div>
+            <div className="panel"><h2>By city</h2><canvas id="ch-city" ref={canvases.city} height={120}></canvas></div>
           </div>
           <div className="charts-2">
             <div className="panel"><h2>Causes of interest</h2><canvas id="ch-interest" ref={canvases.interest} height={120}></canvas></div>
@@ -250,6 +289,46 @@ export default function AdminPage() {
               </table>
             </div>
             {dataErr && <div className="msg err">{dataErr}</div>}
+          </div>
+
+          {/* PAYMENTS / TRANSACTIONS — separate ledger */}
+          <div className="panel">
+            <div className="panel__head">
+              <h2>Payments &amp; transactions</h2>
+              <span className="tot">
+                {payments.length} transactions · collected <b>{fmtINR(totalCollected)}</b>
+                <button className="btn-dereg" style={{ marginLeft: 14 }} onClick={onBackfill} disabled={backfilling}>
+                  {backfilling ? "Backfilling…" : "Backfill past payments"}
+                </button>
+              </span>
+            </div>
+            {backfillMsg && <div className={"msg " + (backfillMsg.ok ? "ok" : "err")}>{backfillMsg.text}</div>}
+            <div className="table-tools">
+              <input type="search" placeholder="Search transaction id, member id, name…" value={paySearch} onChange={(e) => setPaySearch(e.target.value)} />
+            </div>
+            <div className="table-scroll">
+              <table>
+                <thead><tr>
+                  <th>Transaction ID</th><th>Order ID</th><th>Member ID</th><th>Name</th><th>Amount</th><th>Type</th><th>Status</th><th>Date</th>
+                </tr></thead>
+                <tbody>
+                  {payFiltered.length === 0 ? (
+                    <tr><td colSpan={8} style={{ padding: 24, color: "var(--muted)" }}>No transactions yet.</td></tr>
+                  ) : payFiltered.map((p) => (
+                    <tr key={p.id}>
+                      <td className="txn">{p.paymentId}</td>
+                      <td className="txn">{p.orderId}</td>
+                      <td className="mid">{p.memberId || "—"}</td>
+                      <td>{p.name || "—"}</td>
+                      <td>{p.amount ? fmtINR(p.amount) : "—"}</td>
+                      <td>{p.type}</td>
+                      <td><span className="pill active">{p.status}</span></td>
+                      <td>{p.createdAt ? new Date(p.createdAt).toLocaleString("en-IN") : "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </main>
       )}
