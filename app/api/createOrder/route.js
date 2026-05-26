@@ -53,6 +53,9 @@ export async function POST(req) {
     });
   } catch (err) {
     console.error("createOrder failed", err);
-    return NextResponse.json({ error: "Could not create the order. Please try again." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Could not create the order. Please try again.", detail: String((err && err.message) || err) },
+      { status: 500 }
+    );
   }
 }
