@@ -519,10 +519,9 @@ export default function GetInvolvedPage() {
             </div>
           </div>
         </section>
-      </main>
 
-      {/* REGISTRATION MODAL */}
-      {open && (
+        {/* REGISTRATION MODAL */}
+        {open && (
         <div className="reg-overlay is-open" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
           <div className="reg-dialog">
             <button type="button" className="reg-dialog__close" aria-label="Close registration" onClick={() => setOpen(false)}>×</button>
@@ -664,7 +663,8 @@ export default function GetInvolvedPage() {
             )}
           </div>
         </div>
-      )}
+        )}
+      </main>
 
       <SiteFooter />
     </>
