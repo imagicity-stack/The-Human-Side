@@ -2,22 +2,27 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb } from "@/lib/firebaseAdmin";
-import { cleanRegistration, getCurrentFee, CURRENCY } from "@/lib/membership";
+import { cleanRegistration, getCurrentFee, getProgram, CURRENCY } from "@/lib/membership";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req) {
   try {
-    const reg = cleanRegistration(await req.json());
+    const raw = await req.json();
+    const program = raw && raw.program === "voices-unheard" ? "voices-unheard" : "membership";
+    const cfg = getProgram(program);
+
+    const reg = cleanRegistration(raw, program);
     if (!reg.firstName || !reg.email || !reg.phone) {
       return NextResponse.json({ error: "First name, email and phone are required." }, { status: 400 });
     }
 
-    const fee = await getCurrentFee();
+    const fee = await getCurrentFee(program);
     const db = getDb();
-    const docRef = await db.collection("members").add({
+    const docRef = await db.collection(cfg.collection).add({
       ...reg,
+      program,
       membershipFee: fee,
       currency: CURRENCY,
       status: "pending_payment",
@@ -26,7 +31,7 @@ export async function POST(req) {
       paymentId: null,
       orderId: null,
       createdAt: FieldValue.serverTimestamp(),
-      source: "get-involved",
+      source: program === "voices-unheard" ? "voices-unheard" : "get-involved",
     });
 
     const keyId = (process.env.RAZORPAY_KEY_ID || "").trim();
@@ -38,7 +43,7 @@ export async function POST(req) {
       amount: fee * 100,
       currency: CURRENCY,
       receipt: docRef.id,
-      notes: { type: "volunteer-membership", registrationId: docRef.id },
+      notes: { type: program, registrationId: docRef.id },
     });
 
     await docRef.update({ orderId: order.id });
@@ -50,6 +55,7 @@ export async function POST(req) {
       currency: order.currency,
       keyId,
       fee,
+      program,
     });
   } catch (err) {
     console.error("createOrder failed", err);

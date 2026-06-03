@@ -24,6 +24,9 @@ service cloud.firestore {
     match /members/{memberDoc} {
       allow read, write: if false;
     }
+    match /voicesUnheard/{regDoc} {
+      allow read, write: if false;
+    }
     match /counters/{counterDoc} {
       allow read, write: if false;
     }

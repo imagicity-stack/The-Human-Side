@@ -15,6 +15,7 @@ export default function SiteHeader({ active }) {
         <nav className="site-nav">
           <Link className={cls("home")} href="/">Home</Link>
           <Link className={cls("about")} href="/about">About</Link>
+          <Link className={cls("voices-unheard")} href="/voices-unheard">Voices Unheard</Link>
           <Link className={cls("get-involved")} href="/get-involved">Get Involved</Link>
           <Link className={cls("partners")} href="/partners">Partners</Link>
           <Link className="site-nav__cta" href="/get-involved">
