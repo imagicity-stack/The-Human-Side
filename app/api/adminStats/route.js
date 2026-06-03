@@ -45,7 +45,12 @@ export async function POST(req) {
       }
     });
     const currentFee = await getCurrentFee();
-    return NextResponse.json({ stats, currentFee });
+    const voicesUnheardFee = await getCurrentFee("voices-unheard");
+    return NextResponse.json({
+      stats,
+      currentFee,
+      fees: { membership: currentFee, "voices-unheard": voicesUnheardFee },
+    });
   } catch (err) {
     console.error("adminStats failed", err);
     return NextResponse.json({ error: "Could not load stats." }, { status: 500 });
