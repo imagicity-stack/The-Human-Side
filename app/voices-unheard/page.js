@@ -187,7 +187,7 @@ export default function VoicesUnheardPage() {
                 <ul className="vu-hero__meta">
                   <li><span className="k">Begins</span><span className="v">15<sup>th</sup> June 2026</span></li>
                   <li><span className="k">Venue</span><span className="v">School Campus</span></li>
-                  <li><span className="k">For</span><span className="v">Classes IX – XII</span></li>
+                  <li><span className="k">For</span><span className="v">Classes 8<sup>th</sup> – 10<sup>th</sup></span></li>
                   <li><span className="k">Seats</span><span className="v">Limited</span></li>
                 </ul>
 
@@ -533,8 +533,6 @@ export default function VoicesUnheardPage() {
                           <option>Class 8</option>
                           <option>Class 9</option>
                           <option>Class 10</option>
-                          <option>Class 11</option>
-                          <option>Class 12</option>
                         </select>
                       </div>
                     </div>
