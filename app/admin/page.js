@@ -32,10 +32,17 @@ export default function AdminPage() {
   const [vuFee, setVuFee] = useState(null);
   const [vuFeeInput, setVuFeeInput] = useState("");
   const [vuFeeMsg, setVuFeeMsg] = useState(null);
+  const [vuStats, setVuStats] = useState(null);
+  const [vuRegs, setVuRegs] = useState([]);
+  const [vuSearch, setVuSearch] = useState("");
   const [dataErr, setDataErr] = useState("");
   const [chartReady, setChartReady] = useState(false);
 
   const canvases = { month: useRef(null), revenue: useRef(null), role: useRef(null), city: useRef(null), interest: useRef(null), tshirt: useRef(null) };
+  const vuCanvases = {
+    month: useRef(null), revenue: useRef(null), klass: useRef(null), gender: useRef(null),
+    city: useRef(null), tshirt: useRef(null), guardian: useRef(null), hear: useRef(null),
+  };
   const chartObjs = useRef({});
 
   useEffect(() => {
@@ -87,6 +94,14 @@ export default function AdminPage() {
       setPayments(payments || []);
       setTotalCollected(totalCollected || 0);
     } catch (err) { setDataErr((p) => p || "Could not load payments: " + err.message); }
+    try {
+      const { stats: vs } = await adminApi("/api/adminVoicesUnheardStats", {});
+      setVuStats(vs);
+    } catch (err) { setDataErr((p) => p || "Could not load Voices Unheard stats: " + err.message); }
+    try {
+      const { registrations } = await adminApi("/api/adminVoicesUnheardList", {});
+      setVuRegs(registrations || []);
+    } catch (err) { setDataErr((p) => p || "Could not load Voices Unheard registrations: " + err.message); }
   }
 
   // (re)draw charts whenever stats or Chart.js readiness changes
@@ -128,6 +143,46 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stats, chartReady]);
 
+  // Voices Unheard charts
+  useEffect(() => {
+    if (!vuStats || !chartReady || typeof window.Chart === "undefined") return;
+    const draw = (ref, type, data, opts) => {
+      if (!ref.current) return;
+      const labels = data.map((d) => d[0]);
+      const values = data.map((d) => d[1]);
+      const key = ref.current.id;
+      if (chartObjs.current[key]) chartObjs.current[key].destroy();
+      chartObjs.current[key] = new window.Chart(ref.current, {
+        type,
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: type === "bar" ? "#7C3F98" : PALETTE,
+            borderWidth: 0,
+            borderRadius: type === "bar" ? 6 : 0,
+          }],
+        },
+        options: Object.assign({
+          responsive: true,
+          plugins: { legend: { display: type !== "bar", position: "bottom", labels: { font: { size: 11 } } } },
+          scales: type === "bar" ? { y: { beginAtZero: true, ticks: { precision: 0 } } } : {},
+        }, opts || {}),
+      });
+    };
+    const months = entries(vuStats.byMonth).sort((a, b) => a[0].localeCompare(b[0]));
+    draw(vuCanvases.month, "bar", months);
+    const rev = Object.entries(vuStats.revenueByMonth || {}).sort((a, b) => a[0].localeCompare(b[0]));
+    draw(vuCanvases.revenue, "bar", rev);
+    draw(vuCanvases.klass, "doughnut", entries(vuStats.byClass));
+    draw(vuCanvases.gender, "doughnut", entries(vuStats.byGender));
+    draw(vuCanvases.city, "bar", entries(vuStats.byCity).slice(0, 10), { indexAxis: "y" });
+    draw(vuCanvases.tshirt, "doughnut", entries(vuStats.byTshirt));
+    draw(vuCanvases.guardian, "doughnut", entries(vuStats.byGuardianRelation));
+    draw(vuCanvases.hear, "bar", entries(vuStats.byHearAbout), { indexAxis: "y" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vuStats, chartReady]);
+
   async function onLogin(e) {
     e.preventDefault();
     setLoginErr("");
@@ -145,6 +200,13 @@ export default function AdminPage() {
     const label = m.memberId || `${m.firstName} ${m.lastName}`;
     if (!confirm(`Deregister ${label}? They will no longer count as an active member.`)) return;
     try { await adminApi("/api/adminDeregister", { id: m.id }); await loadData(); }
+    catch (err) { alert("Could not deregister: " + err.message); }
+  }
+
+  async function onDeregisterVu(m) {
+    const label = m.memberId || `${m.firstName} ${m.lastName}`;
+    if (!confirm(`Deregister ${label} from Voices Unheard 2026?`)) return;
+    try { await adminApi("/api/adminDeregister", { id: m.id, program: "voices-unheard" }); await loadData(); }
     catch (err) { alert("Could not deregister: " + err.message); }
   }
 
@@ -192,6 +254,12 @@ export default function AdminPage() {
     const q = paySearch.toLowerCase();
     if (!q) return true;
     return [p.paymentId, p.orderId, p.memberId, p.name, p.email].filter(Boolean).join(" ").toLowerCase().includes(q);
+  });
+
+  const vuFiltered = vuRegs.filter((m) => {
+    const q = vuSearch.toLowerCase();
+    if (!q) return true;
+    return [m.memberId, m.firstName, m.lastName, m.email, m.city, m.school, m.classGrade].filter(Boolean).join(" ").toLowerCase().includes(q);
   });
 
   return (
@@ -355,6 +423,78 @@ export default function AdminPage() {
                       <td>{p.type}</td>
                       <td><span className="pill active">{p.status}</span></td>
                       <td>{p.createdAt ? new Date(p.createdAt).toLocaleString("en-IN") : "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* ======================================================
+              VOICES UNHEARD 2026 — ANALYTICS
+              ====================================================== */}
+          <div className="section-divider">
+            <span className="eyebrow">— Camp · Voices Unheard 2026</span>
+            <h2>Voices Unheard analytics</h2>
+            <p>Registrations, revenue, and demographics for the summer camp.</p>
+          </div>
+
+          <div className="cards">
+            <div className="card"><div className="k">Total registrations</div><div className="v">{vuStats ? vuStats.total : "—"}</div></div>
+            <div className="card"><div className="k">Confirmed (paid)</div><div className="v">{vuStats ? vuStats.active : "—"}</div></div>
+            <div className="card"><div className="k">Pending</div><div className="v">{vuStats ? vuStats.pending : "—"}</div></div>
+            <div className="card"><div className="k">Deregistered</div><div className="v">{vuStats ? vuStats.deregistered : "—"}</div></div>
+            <div className="card"><div className="k">New this month</div><div className="v">{vuStats ? vuStats.thisMonth : "—"}</div></div>
+            <div className="card accent"><div className="k">Camp revenue (total)</div><div className="v">{vuStats ? fmtINR(vuStats.revenue) : "—"}</div></div>
+            <div className="card accent"><div className="k">Revenue this month</div><div className="v">{vuStats ? fmtINR(vuStats.thisMonthRevenue) : "—"}</div></div>
+          </div>
+
+          <div className="charts" style={{ marginBottom: 24 }}>
+            <div className="panel"><h2>Registrations by month</h2><canvas id="vu-ch-month" ref={vuCanvases.month} height={120}></canvas></div>
+            <div className="panel"><h2>Revenue by month (₹)</h2><canvas id="vu-ch-revenue" ref={vuCanvases.revenue} height={120}></canvas></div>
+          </div>
+          <div className="charts-2">
+            <div className="panel"><h2>By class</h2><canvas id="vu-ch-class" ref={vuCanvases.klass} height={120}></canvas></div>
+            <div className="panel"><h2>By gender</h2><canvas id="vu-ch-gender" ref={vuCanvases.gender} height={120}></canvas></div>
+          </div>
+          <div className="charts-2">
+            <div className="panel"><h2>By city</h2><canvas id="vu-ch-city" ref={vuCanvases.city} height={120}></canvas></div>
+            <div className="panel"><h2>T-shirt sizes</h2><canvas id="vu-ch-tshirt" ref={vuCanvases.tshirt} height={120}></canvas></div>
+          </div>
+          <div className="charts-2">
+            <div className="panel"><h2>Guardian relation</h2><canvas id="vu-ch-guardian" ref={vuCanvases.guardian} height={120}></canvas></div>
+            <div className="panel"><h2>How they heard about us</h2><canvas id="vu-ch-hear" ref={vuCanvases.hear} height={120}></canvas></div>
+          </div>
+
+          <div className="panel">
+            <h2>Camp registrations</h2>
+            <div className="table-tools">
+              <input type="search" placeholder="Search name, email, ID, class, school…" value={vuSearch} onChange={(e) => setVuSearch(e.target.value)} />
+            </div>
+            <div className="table-scroll">
+              <table>
+                <thead><tr>
+                  <th>Camp ID</th><th>Name</th><th>Email</th><th>Phone</th>
+                  <th>Class</th><th>School</th><th>City</th>
+                  <th>Guardian</th><th>Status</th><th>Fee</th><th>Registered</th><th></th>
+                </tr></thead>
+                <tbody>
+                  {vuFiltered.length === 0 ? (
+                    <tr><td colSpan={12} style={{ padding: 24, color: "var(--muted)" }}>No camp registrations yet.</td></tr>
+                  ) : vuFiltered.map((m) => (
+                    <tr key={m.id}>
+                      <td className="mid">{m.memberId || "—"}</td>
+                      <td>{[m.firstName, m.lastName].filter(Boolean).join(" ") || "—"}</td>
+                      <td>{m.email}</td>
+                      <td>{m.phone}</td>
+                      <td>{[m.classGrade, m.section].filter(Boolean).join(" · ") || "—"}</td>
+                      <td>{m.school || "—"}</td>
+                      <td>{m.city || "—"}</td>
+                      <td>{m.guardianName ? `${m.guardianName}${m.guardianPhone ? " · " + m.guardianPhone : ""}` : "—"}</td>
+                      <td><span className={"pill " + m.status}>{m.status.replace("_", " ")}</span></td>
+                      <td>{m.membershipFee ? fmtINR(m.membershipFee) : "—"}</td>
+                      <td>{m.createdAt ? new Date(m.createdAt).toLocaleDateString("en-IN") : "—"}</td>
+                      <td><button className="btn-dereg" disabled={m.status === "deregistered"} onClick={() => onDeregisterVu(m)}>Deregister</button></td>
                     </tr>
                   ))}
                 </tbody>

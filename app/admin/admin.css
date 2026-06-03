@@ -66,6 +66,17 @@
   .charts .panel { margin-bottom: 0; }
   .charts-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 
+  .section-divider {
+    margin: 56px 0 24px;
+    padding: 28px 24px;
+    border-radius: 12px;
+    background: linear-gradient(140deg, var(--purple-deep), var(--ink));
+    color: #fff;
+  }
+  .section-divider .eyebrow { color: var(--yellow); }
+  .section-divider h2 { font-family: var(--serif); font-weight: 500; font-size: 28px; margin: 8px 0 6px; color: #fff; }
+  .section-divider p { margin: 0; color: #DCD2E0; font-size: 14px; }
+
   .fee-row { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
   .fee-row .field { display: flex; flex-direction: column; gap: 6px; }
   .fee-row label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }

@@ -424,6 +424,9 @@ export default function VoicesUnheardPage() {
                   This is structured, safe, and designed by educators who care about your
                   child <em>as a whole person</em> — not just a report card.
                 </p>
+                <p className="vu-parents__docs">
+                  Read the full <Link href="/voices-unheard/consent">Parent / Guardian Consent</Link> and the camp&apos;s <Link href="/voices-unheard/terms">Terms &amp; Code of Conduct</Link> before registering.
+                </p>
               </div>
             </div>
           </div>
@@ -570,11 +573,11 @@ export default function VoicesUnheardPage() {
                     </div>
                     <div className="form__row">
                       <div className="field"><label>Guardian phone <span className="req">*</span></label><input name="guardianPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" required /></div>
-                      <div className="field"><label>Guardian email <span className="req">*</span></label><input name="guardianEmail" type="email" placeholder="parent@example.com" required /></div>
+                      <div className="field"><label>Guardian email (optional)</label><input name="guardianEmail" type="email" placeholder="parent@example.com" /></div>
                     </div>
                     <div className="form__row">
-                      <div className="field"><label>Emergency contact name <span className="req">*</span></label><input name="emergencyName" type="text" placeholder="Different from guardian, if possible" required /></div>
-                      <div className="field"><label>Emergency contact phone <span className="req">*</span></label><input name="emergencyPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" required /></div>
+                      <div className="field"><label>Emergency contact name (optional)</label><input name="emergencyName" type="text" placeholder="Different from guardian, if possible" /></div>
+                      <div className="field"><label>Emergency contact phone (optional)</label><input name="emergencyPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" /></div>
                     </div>
                   </fieldset>
 
@@ -592,11 +595,11 @@ export default function VoicesUnheardPage() {
 
                   <label className="reg-consent">
                     <input type="checkbox" name="consents" value="parent-consent" required />
-                    <span>As the parent/guardian, I consent to my child attending Voices Unheard 2026 under the supervision of The Human Side staff, and I agree to be contacted about the camp. <span className="req">*</span></span>
+                    <span>As the parent/guardian, I have read and agree to the <a href="/voices-unheard/consent" target="_blank" rel="noopener noreferrer">Parent / Guardian Consent</a>, and I voluntarily consent to my child attending Voices Unheard 2026 under the supervision of The Human Side staff. <span className="req">*</span></span>
                   </label>
                   <label className="reg-consent">
                     <input type="checkbox" name="consents" value="code-of-conduct" required />
-                    <span>I have read and agree to the camp&apos;s code of conduct and safety protocol. I confirm the details above are correct. <span className="req">*</span></span>
+                    <span>I have read and agree to the camp&apos;s <a href="/voices-unheard/terms" target="_blank" rel="noopener noreferrer">Terms &amp; Code of Conduct</a>, including the safety, refund, and media-use provisions. I confirm the details above are correct. <span className="req">*</span></span>
                   </label>
 
                   <div className="reg-actions">
