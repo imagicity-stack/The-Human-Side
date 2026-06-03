@@ -570,11 +570,11 @@ export default function VoicesUnheardPage() {
                     </div>
                     <div className="form__row">
                       <div className="field"><label>Guardian phone <span className="req">*</span></label><input name="guardianPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" required /></div>
-                      <div className="field"><label>Guardian email <span className="req">*</span></label><input name="guardianEmail" type="email" placeholder="parent@example.com" required /></div>
+                      <div className="field"><label>Guardian email (optional)</label><input name="guardianEmail" type="email" placeholder="parent@example.com" /></div>
                     </div>
                     <div className="form__row">
-                      <div className="field"><label>Emergency contact name <span className="req">*</span></label><input name="emergencyName" type="text" placeholder="Different from guardian, if possible" required /></div>
-                      <div className="field"><label>Emergency contact phone <span className="req">*</span></label><input name="emergencyPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" required /></div>
+                      <div className="field"><label>Emergency contact name (optional)</label><input name="emergencyName" type="text" placeholder="Different from guardian, if possible" /></div>
+                      <div className="field"><label>Emergency contact phone (optional)</label><input name="emergencyPhone" type="tel" inputMode="tel" placeholder="+91 …" pattern="[0-9+\-\s]{7,15}" /></div>
                     </div>
                   </fieldset>
 
