@@ -29,6 +29,9 @@ export default function AdminPage() {
   const [backfillMsg, setBackfillMsg] = useState(null);
   const [feeInput, setFeeInput] = useState("");
   const [feeMsg, setFeeMsg] = useState(null);
+  const [vuFee, setVuFee] = useState(null);
+  const [vuFeeInput, setVuFeeInput] = useState("");
+  const [vuFeeMsg, setVuFeeMsg] = useState(null);
   const [dataErr, setDataErr] = useState("");
   const [chartReady, setChartReady] = useState(false);
 
@@ -65,10 +68,15 @@ export default function AdminPage() {
   async function loadData() {
     setDataErr("");
     try {
-      const { stats, currentFee } = await adminApi("/api/adminStats", {});
+      const { stats, currentFee, fees } = await adminApi("/api/adminStats", {});
       setStats(stats);
       setCurrentFee(currentFee);
       setFeeInput(String(currentFee));
+      const vu = fees && fees["voices-unheard"];
+      if (vu != null) {
+        setVuFee(vu);
+        setVuFeeInput(String(vu));
+      }
     } catch (err) { setDataErr("Could not load stats: " + err.message); }
     try {
       const { members } = await adminApi("/api/adminListMembers", {});
@@ -144,10 +152,20 @@ export default function AdminPage() {
     const amount = parseInt(feeInput, 10);
     if (!amount || amount < 1) { setFeeMsg({ ok: false, text: "Enter a valid amount." }); return; }
     try {
-      await adminApi("/api/adminSetAmount", { amount });
-      setFeeMsg({ ok: true, text: "Fee updated to " + fmtINR(amount) + "." });
+      await adminApi("/api/adminSetAmount", { amount, program: "membership" });
+      setFeeMsg({ ok: true, text: "Membership fee updated to " + fmtINR(amount) + "." });
       setCurrentFee(amount);
     } catch (err) { setFeeMsg({ ok: false, text: "Could not update: " + err.message }); }
+  }
+
+  async function onSaveVuFee() {
+    const amount = parseInt(vuFeeInput, 10);
+    if (!amount || amount < 1) { setVuFeeMsg({ ok: false, text: "Enter a valid amount." }); return; }
+    try {
+      await adminApi("/api/adminSetAmount", { amount, program: "voices-unheard" });
+      setVuFeeMsg({ ok: true, text: "Voices Unheard fee updated to " + fmtINR(amount) + "." });
+      setVuFee(amount);
+    } catch (err) { setVuFeeMsg({ ok: false, text: "Could not update: " + err.message }); }
   }
 
   async function onBackfill() {
@@ -232,16 +250,29 @@ export default function AdminPage() {
           </div>
 
           <div className="panel">
-            <h2>Registration fee</h2>
+            <h2>Membership registration fee</h2>
             <div className="fee-row">
               <div className="field">
                 <label htmlFor="fee-input">Set amount (INR)</label>
                 <input id="fee-input" type="number" min="1" step="1" placeholder="999" value={feeInput} onChange={(e) => setFeeInput(e.target.value)} />
               </div>
               <button className="btn-solid" style={{ width: "auto", padding: "13px 24px" }} onClick={onSaveFee}>Update fee</button>
-              <div className="fee-now">Current: <b>{currentFee != null ? fmtINR(currentFee) : "—"}</b> · reflects across the site immediately</div>
+              <div className="fee-now">Current: <b>{currentFee != null ? fmtINR(currentFee) : "—"}</b> · used on /get-involved</div>
             </div>
             {feeMsg && <div className={"msg " + (feeMsg.ok ? "ok" : "err")}>{feeMsg.text}</div>}
+          </div>
+
+          <div className="panel">
+            <h2>Voices Unheard 2026 fee</h2>
+            <div className="fee-row">
+              <div className="field">
+                <label htmlFor="vu-fee-input">Set amount (INR)</label>
+                <input id="vu-fee-input" type="number" min="1" step="1" placeholder="799" value={vuFeeInput} onChange={(e) => setVuFeeInput(e.target.value)} />
+              </div>
+              <button className="btn-solid" style={{ width: "auto", padding: "13px 24px" }} onClick={onSaveVuFee}>Update fee</button>
+              <div className="fee-now">Current: <b>{vuFee != null ? fmtINR(vuFee) : "—"}</b> · used on /voices-unheard</div>
+            </div>
+            {vuFeeMsg && <div className={"msg " + (vuFeeMsg.ok ? "ok" : "err")}>{vuFeeMsg.text}</div>}
           </div>
 
           <div className="charts" style={{ marginBottom: 24 }}>
