@@ -626,6 +626,20 @@
   .vu-parents__list strong { color: var(--ink); font-weight: 600; }
   .vu-parents__foot { color: var(--ink) !important; font-style: italic; }
   .vu-parents__foot em { color: var(--red); }
+  .vu-parents__docs {
+    margin: 18px 0 0 !important;
+    padding: 14px 18px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: 12px !important;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft) !important;
+    max-width: none !important;
+  }
+  .vu-parents__docs a { color: var(--red); font-weight: 600; text-decoration: underline; }
+  .vu-parents__docs a:hover { color: var(--red-deep); }
 
   /* ---- DETAILS ---- */
   .vu-details {
@@ -903,6 +917,8 @@
     line-height: 1.5;
   }
   .reg-consent input { width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--red); }
+  .reg-consent a { color: var(--red); text-decoration: underline; font-weight: 500; }
+  .reg-consent a:hover { color: var(--red-deep); }
   .reg-actions {
     display: flex;
     align-items: center;
