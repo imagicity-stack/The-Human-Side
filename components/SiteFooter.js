@@ -18,6 +18,7 @@ export default function SiteFooter() {
             <ul>
               <li><Link href="/">Home</Link></li>
               <li><Link href="/about">About</Link></li>
+              <li><Link href="/voices-unheard">Voices Unheard 2026</Link></li>
               <li><Link href="/get-involved">Get Involved</Link></li>
               <li><Link href="/partners">Partners</Link></li>
             </ul>

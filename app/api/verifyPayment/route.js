@@ -7,7 +7,10 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req) {
   try {
-    const { registrationId, razorpay_payment_id, razorpay_order_id, razorpay_signature } = await req.json();
+    const body = await req.json();
+    const { registrationId, razorpay_payment_id, razorpay_order_id, razorpay_signature } = body;
+    const program = body && body.program === "voices-unheard" ? "voices-unheard" : "membership";
+
     if (!registrationId || !razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
       return NextResponse.json({ error: "Missing payment verification fields." }, { status: 400 });
     }
@@ -22,7 +25,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
     }
 
-    const result = await finalizeMembership(registrationId, razorpay_payment_id, razorpay_order_id);
+    const result = await finalizeMembership(registrationId, razorpay_payment_id, razorpay_order_id, program);
     return NextResponse.json({ memberId: result.memberId });
   } catch (err) {
     console.error("verifyPayment failed", err);
