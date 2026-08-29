@@ -7,7 +7,7 @@ export default function LegalPage({ title, updated = "24 May 2026", children }) 
   return (
     <>
       <SiteHeader />
-      <main className="pg-legal">
+      <main id="main" className="pg-legal">
         <section className="legal-hero">
           <div className="wrap">
             <div className="legal-crumbs">

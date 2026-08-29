@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import Photo from "@/components/Photo";
 import "./partners.css";
 
 export const metadata = { title: "Partners — The Human Side" };
@@ -10,7 +11,7 @@ export default function PartnersPage() {
     <>
       <SiteHeader active="partners" />
 
-      <main className="pg-partners">
+      <main id="main" className="pg-partners">
         {/* PAGE HERO */}
         <section className="page-hero">
           <div className="wrap">
@@ -31,7 +32,7 @@ export default function PartnersPage() {
         {/* PARTNER 1 — EDENWOODS */}
         <section className="partner">
           <div className="wrap">
-            <div className="partner__inner">
+            <div className="partner__inner" data-reveal>
               <div className="partner__copy">
                 <div className="partner__role">
                   <span className="num">01</span>
@@ -67,7 +68,7 @@ export default function PartnersPage() {
               </div>
               <div className="partner__visual">
                 <div className="partner__visual-image">
-                  <img src="/assets/images/partner-edenwoods.jpg" alt="Edenwoods Foundation" loading="lazy" />
+                  <Photo src="/assets/images/partner-edenwoods.jpg" alt="Edenwoods Foundation" />
                 </div>
                 <div className="partner__visual-logo" data-stamp="№ 01 · The Foundation">
                   <img src="/assets/edenwoods-logo.png" alt="Edenwoods Eduhub Foundation" />
@@ -80,10 +81,10 @@ export default function PartnersPage() {
         {/* PARTNER 2 — ELDEN HEIGHTS */}
         <section className="partner partner--cream partner--reverse">
           <div className="wrap">
-            <div className="partner__inner">
+            <div className="partner__inner" data-reveal>
               <div className="partner__visual">
                 <div className="partner__visual-image">
-                  <img src="/assets/images/partner-elden.jpg" alt="Elden Heights campus" loading="lazy" />
+                  <Photo src="/assets/images/partner-elden.jpg" alt="Elden Heights campus" />
                 </div>
                 <div className="partner__visual-logo" data-stamp="№ 02 · The School">
                   <img src="/assets/elden-heights-logo.png" alt="The Elden Heights School" />
@@ -115,7 +116,7 @@ export default function PartnersPage() {
                 <div className="partner__meta">
                   <div className="pair"><span className="k">Role</span><span className="v">Partner school &amp; host community</span></div>
                   <div className="pair"><span className="k">Provides</span><span className="v">Students, faculty, parents, premises</span></div>
-                  <div className="pair"><span className="k">Motto</span><span className="v"><em style={{ fontStyle: "italic", color: "var(--red)" }}>Towards Eternal Glory</em></span></div>
+                  <div className="pair"><span className="k">Motto</span><span className="v"><em style={{ color: "var(--red)" }}>Towards Eternal Glory</em></span></div>
                   <div className="pair"><span className="k">For students</span><span className="v">Saturday meetings on campus</span></div>
                 </div>
                 <div className="partner__cta">
@@ -136,17 +137,17 @@ export default function PartnersPage() {
               <h2>One <em>foundation,</em> one school,<br />and a clear division of care.</h2>
             </div>
             <div className="how__grid">
-              <div className="how__step">
+              <div className="how__step" data-reveal>
                 <div className="num">i.</div>
                 <h3>Edenwoods holds the rails.</h3>
                 <p>Legal entity, funding, accounting, governance. The boring, important spine — handled, so students don&apos;t have to.</p>
               </div>
-              <div className="how__step">
+              <div className="how__step" data-reveal>
                 <div className="num">ii.</div>
                 <h3>Elden Heights brings the people.</h3>
                 <p>Students lead the projects. Faculty mentor. Parents and alumni open doors. The campus is the room the work happens in.</p>
               </div>
-              <div className="how__step">
+              <div className="how__step" data-reveal>
                 <div className="num">iii.</div>
                 <h3>The Human Side does the work.</h3>
                 <p>Drives, conversations, audits, and visits. Quietly, weekly. The initiative is the thing both partners exist to enable.</p>
@@ -158,7 +159,7 @@ export default function PartnersPage() {
         {/* BECOME A PARTNER */}
         <section className="become">
           <div className="wrap">
-            <div className="become__inner">
+            <div className="become__inner" data-reveal>
               <div>
                 <span className="eyebrow" style={{ color: "var(--yellow)" }}>— Other partnerships</span>
                 <h2>Want to <em>join</em> the masthead?</h2>

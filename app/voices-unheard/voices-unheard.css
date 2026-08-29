@@ -1039,3 +1039,140 @@
 }
 
 body.reg-locked { overflow: hidden; }
+
+
+/* ============================================================
+   Voices Unheard — design-system refinements
+   Retunes the display type for the serif, and brings the
+   forms, cards and dialog in line with the shared system.
+   ============================================================ */
+.pg-vu h1,
+.pg-vu h2 {
+  letter-spacing: -0.035em;
+}
+.pg-vu h3,
+.pg-vu h4 {
+  letter-spacing: -0.025em;
+}
+.pg-vu .page-hero__lede,
+.pg-vu .lede {
+  letter-spacing: -0.014em;
+}
+
+/* ---- form fields ---- */
+.pg-vu .field label {
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  color: var(--muted);
+}
+.pg-vu .field input,
+.pg-vu .field textarea,
+.pg-vu .field select {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 13px 15px;
+  font-family: var(--sans);
+  font-size: 15.5px;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease);
+}
+.pg-vu .field input::placeholder,
+.pg-vu .field textarea::placeholder { color: color-mix(in oklab, var(--muted) 78%, transparent); }
+.pg-vu .field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 19px) calc(50% + 1px), calc(100% - 14px) calc(50% + 1px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 38px;
+}
+.pg-vu .field input:hover,
+.pg-vu .field textarea:hover,
+.pg-vu .field select:hover { border-color: color-mix(in oklab, var(--red) 30%, var(--line)); }
+.pg-vu .field input:focus,
+.pg-vu .field textarea:focus,
+.pg-vu .field select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--red) 16%, transparent);
+  outline: none;
+}
+.pg-vu .field textarea { min-height: 104px; font-size: 15px; line-height: 1.6; }
+
+/* ---- interest checkboxes ---- */
+.pg-vu .check {
+  border-radius: var(--r-md);
+  padding: 12px 15px;
+  background: var(--surface);
+  font-size: 13.5px;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+.pg-vu .check:hover { border-color: color-mix(in oklab, var(--red) 40%, var(--line)); }
+.pg-vu .check:has(input:checked) {
+  border-color: var(--red);
+  background: color-mix(in oklab, var(--red) 8%, var(--surface));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--red) 30%, transparent);
+}
+.pg-vu .check input {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1.5px solid color-mix(in oklab, var(--ink) 34%, transparent);
+  flex-shrink: 0;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.pg-vu .check input:checked {
+  background: var(--red)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.4 2.4 4.6-5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 12px 12px no-repeat;
+  border-color: var(--red);
+}
+
+/* ---- registration dialog ---- */
+.pg-vu .reg-overlay {
+  background: color-mix(in oklab, var(--purple-deep) 76%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+.pg-vu .reg-dialog {
+  border-radius: var(--r-xl);
+  border: 1px solid var(--line);
+  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, .65);
+  animation: ths-dialog-in .38s cubic-bezier(.16, 1, .3, 1) both;
+}
+.pg-vu .reg-dialog__close {
+  border-radius: var(--r-pill);
+  transition:
+    background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.pg-vu .reg-dialog__close:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+  transform: rotate(90deg);
+}
+.pg-vu .reg-fieldset > legend { letter-spacing: 0.19em; font-size: 10px; }
+
+
+@media (max-width: 600px) {
+  .pg-vu .reg-dialog { border-radius: var(--r-lg); }
+}
+
+
+.pg-vu .reg-fieldset > legend,
+.pg-vu .reg-fieldset legend { margin-bottom: 14px; }
+.pg-vu .reg-fieldset + .reg-fieldset {
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+}

@@ -1,37 +1,127 @@
-/* Legal pages — scoped to .pg-legal */
+/* ============================================================
+   Legal & contact pages — scoped to .pg-legal
+   ============================================================ */
 .pg-legal {
   .legal-hero {
-    padding: clamp(50px, 7vw, 90px) 0 clamp(24px, 3vw, 36px);
+    position: relative;
+    overflow: hidden;
+    padding: clamp(40px, 6vw, 80px) 0 clamp(26px, 3vw, 40px);
     border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
   }
-  .legal-crumbs {
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); display: flex; gap: 10px; margin-bottom: 24px;
+  .legal-hero::before {
+    content: "";
+    position: absolute;
+    inset: -60% -10% auto -10%;
+    height: 200%;
+    pointer-events: none;
+    background: radial-gradient(38% 40% at 88% 20%, color-mix(in oklab, var(--red) 16%, transparent), transparent 72%);
   }
-  .legal-crumbs a:hover { color: var(--red); }
-  .legal-hero h1 {
-    font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.02; letter-spacing: -0.01em; margin: 0; max-width: 18ch;
-  }
-  .legal-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+  .legal-hero .wrap { position: relative; z-index: 1; }
 
-  .legal-body { padding: clamp(40px, 6vw, 72px) 0 clamp(60px, 8vw, 100px); }
-  .legal-prose { max-width: 760px; }
-  .legal-prose h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.4vw, 30px); margin: 40px 0 12px; letter-spacing: -0.005em; }
+  .legal-crumbs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .legal-crumbs a { transition: color var(--t-fast) var(--ease); }
+  .legal-crumbs a:hover { color: var(--red); }
+
+  .legal-hero h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 96, 'SOFT' 24;
+    font-size: clamp(34px, 4.8vw, 62px);
+    line-height: 1.02;
+    letter-spacing: -0.038em;
+    max-width: 18ch;
+    color: var(--ink);
+  }
+  .legal-meta {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .legal-body { padding: clamp(36px, 5vw, 64px) 0 clamp(56px, 8vw, 100px); }
+  .legal-prose { max-width: 74ch; }
+  .legal-prose h2 {
+    margin: 42px 0 12px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-variation-settings: 'opsz' 40, 'SOFT' 30;
+    font-size: clamp(21px, 2.2vw, 29px);
+    line-height: 1.16;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
   .legal-prose h2:first-child { margin-top: 0; }
-  .legal-prose h3 { font-family: var(--serif); font-weight: 600; font-size: 18px; margin: 24px 0 8px; }
-  .legal-prose p { color: var(--ink-soft); margin: 0 0 16px; line-height: 1.7; }
-  .legal-prose ul { color: var(--ink-soft); margin: 0 0 16px; padding-left: 22px; line-height: 1.7; }
+  .legal-prose h3 {
+    margin: 26px 0 8px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-variation-settings: 'opsz' 24, 'SOFT' 30;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .legal-prose p { margin: 0 0 16px; color: var(--ink-soft); line-height: 1.75; }
+  .legal-prose ul { margin: 0 0 16px; padding-left: 20px; color: var(--ink-soft); line-height: 1.75; }
   .legal-prose li { margin-bottom: 8px; }
-  .legal-prose a { color: var(--red); text-decoration: underline; }
-  .legal-prose strong { color: var(--ink); }
+  .legal-prose li::marker { color: var(--red); }
+  .legal-prose a {
+    color: var(--red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .legal-prose a:hover { color: var(--red-deep); }
+  .legal-prose strong { color: var(--ink); font-weight: 600; }
+
   .legal-note {
-    background: var(--bg-deep); border: 1px solid var(--line); border-radius: 8px;
-    padding: 16px 20px; font-size: 14px; color: var(--ink-soft); margin: 0 0 28px; line-height: 1.6;
+    margin: 0 0 30px;
+    padding: 18px 22px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--red);
+    border-radius: var(--r-md);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink-soft);
   }
+
   .legal-contact {
-    border: 1px solid var(--line); border-radius: 8px; padding: 24px 26px; margin-top: 8px;
-    font-family: var(--serif); font-size: 17px; color: var(--ink); line-height: 1.7;
+    margin-top: 10px;
+    padding: 26px 28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-1);
+    font-family: var(--serif);
+    font-variation-settings: 'opsz' 20, 'SOFT' 30;
+    font-size: 17px;
+    line-height: 1.7;
+    letter-spacing: -0.012em;
+    color: var(--ink);
   }
-  .legal-contact .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; }
+  .legal-contact .k {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .legal-contact a { color: var(--red); }
 }

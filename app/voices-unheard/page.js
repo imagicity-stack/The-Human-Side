@@ -165,7 +165,7 @@ export default function VoicesUnheardPage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
       <SiteHeader active="voices-unheard" />
 
-      <main className="pg-vu">
+      <main id="main" className="pg-vu">
         {/* HERO */}
         <section className="vu-hero">
           <div className="wrap">

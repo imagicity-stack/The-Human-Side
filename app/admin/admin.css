@@ -106,3 +106,104 @@
     .charts, .charts-2 { grid-template-columns: 1fr; }
   }
 }
+
+/* ============================================================
+   Admin — design-system refinements
+   ============================================================ */
+.pg-admin {
+  background: var(--bg-soft);
+  min-height: 100vh;
+}
+.pg-admin .admin-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+}
+.pg-admin .admin-top .brand b {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+}
+
+.pg-admin .card,
+.pg-admin .panel,
+.pg-admin .login__card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+}
+.pg-admin .card {
+  transition: transform var(--t-mid) var(--ease-out), box-shadow var(--t-mid) var(--ease-out);
+}
+.pg-admin .card:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
+.pg-admin .card .v {
+  font-variation-settings: 'opsz' 48, 'SOFT' 30;
+  letter-spacing: -0.035em;
+}
+.pg-admin .card.accent {
+  background: linear-gradient(140deg, var(--purple-deep), var(--ink) 70%, #1E2B36);
+  box-shadow: var(--sh-2);
+}
+.pg-admin .panel h2,
+.pg-admin .section-divider h2,
+.pg-admin .login__card h1 { letter-spacing: -0.03em; }
+
+.pg-admin .section-divider {
+  border-radius: var(--r-xl);
+  background: linear-gradient(140deg, var(--purple-deep), var(--ink) 70%, #1E2B36);
+  box-shadow: var(--sh-2);
+}
+
+/* inputs */
+.pg-admin .login__card input,
+.pg-admin .fee-row input,
+.pg-admin .table-tools input {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.pg-admin .login__card input { border-radius: var(--r-md); }
+.pg-admin .fee-row input { border-radius: var(--r-md); }
+.pg-admin .login__card input:focus,
+.pg-admin .fee-row input:focus,
+.pg-admin .table-tools input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--red) 16%, transparent);
+  outline: none;
+}
+
+/* buttons */
+.pg-admin .btn-solid {
+  box-shadow: 0 12px 26px -14px rgba(36, 18, 57, .9);
+  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.pg-admin .btn-solid:not(:disabled):hover { transform: translateY(-1px); }
+.pg-admin .btn-dereg {
+  background: var(--surface);
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.pg-admin .btn-dereg:not(:disabled):hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* tables — the header stays put while a long list scrolls */
+.pg-admin .table-scroll {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  max-height: 620px;
+  overflow: auto;
+}
+.pg-admin thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-soft);
+  padding: 12px;
+}
+.pg-admin tbody tr { transition: background var(--t-fast) var(--ease); }
+.pg-admin tbody tr:hover { background: color-mix(in oklab, var(--red) 5%, var(--surface)); }
+.pg-admin tbody tr:last-child td { border-bottom: none; }
+.pg-admin .pill { font-weight: 500; }
