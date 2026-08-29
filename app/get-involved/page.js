@@ -5,6 +5,7 @@ import Link from "next/link";
 import Script from "next/script";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import Photo from "@/components/Photo";
 import "./get-involved.css";
 
 const RZP_KEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
@@ -179,7 +180,7 @@ export default function GetInvolvedPage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
       <SiteHeader active="get-involved" />
 
-      <main className="pg-gi">
+      <main id="main" className="pg-gi">
         {/* PAGE HERO */}
         <section className="page-hero">
           <div className="wrap">
@@ -401,7 +402,7 @@ export default function GetInvolvedPage() {
                   <li>We answer every single message</li>
                 </ul>
                 <div className="form-side__image">
-                  <img src="/assets/images/volunteer.jpg" alt="Volunteers at work" loading="lazy" />
+                  <Photo src="/assets/images/volunteer.jpg" alt="Volunteers at work" />
                 </div>
               </div>
 

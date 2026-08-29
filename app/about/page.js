@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import Photo from "@/components/Photo";
 import "./about.css";
 
 export const metadata = { title: "About — The Human Side" };
@@ -10,7 +11,7 @@ export default function AboutPage() {
     <>
       <SiteHeader active="about" />
 
-      <main className="pg-about">
+      <main id="main" className="pg-about">
         {/* PAGE HERO */}
         <section className="page-hero">
           <div className="wrap">
@@ -26,9 +27,9 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="hero-strip">
-              <img src="/assets/images/about-1.jpg" alt="Wide team / drive day" loading="lazy" />
-              <img src="/assets/images/about-2.jpg" alt="Portrait / candid" loading="lazy" />
-              <img src="/assets/images/about-3.jpg" alt="Detail shot" loading="lazy" />
+              <Photo src="/assets/images/about-1.jpg" alt="Wide team / drive day" />
+              <Photo src="/assets/images/about-2.jpg" alt="Portrait / candid" />
+              <Photo src="/assets/images/about-3.jpg" alt="Detail shot" />
             </div>
           </div>
         </section>
@@ -36,7 +37,7 @@ export default function AboutPage() {
         {/* WHO WE ARE */}
         <section className="section">
           <div className="wrap">
-            <div className="two-col">
+            <div className="two-col" data-reveal>
               <div className="two-col__label">
                 <span className="eyebrow">— Who we are</span>
                 <h2>A small <em>circle,</em> a wide door.</h2>
@@ -66,7 +67,7 @@ export default function AboutPage() {
         {/* WHAT WE STAND FOR */}
         <section className="section section--cream">
           <div className="wrap">
-            <div className="two-col">
+            <div className="two-col" data-reveal>
               <div className="two-col__label">
                 <span className="eyebrow">— What we work on</span>
                 <h2>Four pillars. <em>One</em> promise.</h2>
@@ -79,28 +80,28 @@ export default function AboutPage() {
                 </p>
 
                 <div className="pillar-list">
-                  <article className="pillar-card">
+                  <article className="pillar-card" data-reveal>
                     <div className="pillar-card__num">i.</div>
                     <div>
                       <h3>Women&apos;s Empowerment</h3>
                       <p>Workshops, mentorship circles, and partnerships with organisations already doing the work — focused on resources, agency, and listening.</p>
                     </div>
                   </article>
-                  <article className="pillar-card">
+                  <article className="pillar-card" data-reveal>
                     <div className="pillar-card__num">ii.</div>
                     <div>
                       <h3>Awareness &amp; Safety</h3>
                       <p>Conversations on consent, harassment, and reporting — run with professionals, never preachy, kept honest by the students who lead them.</p>
                     </div>
                   </article>
-                  <article className="pillar-card">
+                  <article className="pillar-card" data-reveal>
                     <div className="pillar-card__num">iii.</div>
                     <div>
                       <h3>Environment</h3>
                       <p>Trees in soil, plastic out of canteens, repair instead of replace. Small audits, posted publicly, every term.</p>
                     </div>
                   </article>
-                  <article className="pillar-card">
+                  <article className="pillar-card" data-reveal>
                     <div className="pillar-card__num">iv.</div>
                     <div>
                       <h3>Charity &amp; Community</h3>
@@ -116,43 +117,43 @@ export default function AboutPage() {
         {/* HOW WE STARTED */}
         <section className="section section--ink">
           <div className="wrap">
-            <div className="two-col">
+            <div className="two-col" data-reveal>
               <div className="two-col__label">
                 <span className="eyebrow" style={{ color: "var(--yellow)" }}>— Our short history</span>
                 <h2 style={{ color: "var(--bg)" }}>From a <em style={{ color: "var(--yellow)" }}>classroom,</em> outward.</h2>
               </div>
               <div className="timeline">
-                <div className="timeline__row">
+                <div className="timeline__row" data-reveal>
                   <div className="timeline__date">2025 · Late</div>
                   <div>
                     <h4>The first conversation</h4>
                     <p>A small group of students start meeting on Saturdays — at first to vent, then to plan. The phrase &quot;the side that still cares&quot; comes out of one of those meetings, half-joking.</p>
                   </div>
-                  <img src="/assets/images/timeline-1.jpg" alt="First meeting" loading="lazy" />
+                  <Photo src="/assets/images/timeline-1.jpg" alt="First meeting" />
                 </div>
-                <div className="timeline__row">
+                <div className="timeline__row" data-reveal>
                   <div className="timeline__date">2026 · January</div>
                   <div>
                     <h4>Held by Edenwoods</h4>
                     <p>Edenwoods Eduhub Foundation takes the initiative under its umbrella — giving it a legal home, funding rails, and the freedom to stay student-led.</p>
                   </div>
-                  <img src="/assets/images/timeline-2.jpg" alt="Foundation signing" loading="lazy" />
+                  <Photo src="/assets/images/timeline-2.jpg" alt="Foundation signing" />
                 </div>
-                <div className="timeline__row">
+                <div className="timeline__row" data-reveal>
                   <div className="timeline__date">2026 · February</div>
                   <div>
                     <h4>The first drives</h4>
                     <p>Two small drives, on campus and at a partner shelter. They&apos;re imperfect. They go ahead anyway. Half of being honest is being willing to start before you&apos;re ready.</p>
                   </div>
-                  <img src="/assets/images/timeline-3.jpg" alt="First drive" loading="lazy" />
+                  <Photo src="/assets/images/timeline-3.jpg" alt="First drive" />
                 </div>
-                <div className="timeline__row">
+                <div className="timeline__row" data-reveal>
                   <div className="timeline__date">Now</div>
                   <div>
                     <h4>This page</h4>
                     <p>The initiative is open — to students, parents, faculty, and friends of the school. The website is here so you can find us, and so we can keep showing our working.</p>
                   </div>
-                  <img src="/assets/images/timeline-4.jpg" alt="This moment" loading="lazy" />
+                  <Photo src="/assets/images/timeline-4.jpg" alt="This moment" />
                 </div>
               </div>
             </div>
@@ -165,32 +166,32 @@ export default function AboutPage() {
             <div style={{ textAlign: "center", marginBottom: 56 }}>
               <span className="eyebrow">— A few small questions</span>
               <h2 className="h-section" style={{ marginTop: 16 }}>
-                Asked <em style={{ fontStyle: "italic", color: "var(--red)" }}>honestly,</em> answered the same way.
+                Asked <em style={{ color: "var(--red)" }}>honestly,</em> answered the same way.
               </h2>
             </div>
             <div className="faq">
-              <div className="faq__item">
+              <div className="faq__item" data-reveal>
                 <div className="faq__num">01</div>
                 <div>
                   <h3 className="faq__q">Who can join?</h3>
                   <p className="faq__a">Anyone from the school community to begin with — students, parents, faculty, alumni. As we find our feet, the door opens wider. If you&apos;re reading this and unsure, that already means yes.</p>
                 </div>
               </div>
-              <div className="faq__item">
+              <div className="faq__item" data-reveal>
                 <div className="faq__num">02</div>
                 <div>
                   <h3 className="faq__q">Is this a charity, an NGO, or a school club?</h3>
                   <p className="faq__a">It&apos;s a social initiative held by Edenwoods Eduhub Foundation. Practically, that means we have the legal and financial backbone of a foundation, but the rhythm and energy of a school programme.</p>
                 </div>
               </div>
-              <div className="faq__item">
+              <div className="faq__item" data-reveal>
                 <div className="faq__num">03</div>
                 <div>
                   <h3 className="faq__q">How do you decide what to work on?</h3>
                   <p className="faq__a">We listen. Students raise something; we ask the people who&apos;d be most affected; we look at what&apos;s already being done well; and we pick our share. The four pillars are the rough shape — but the specifics change with the work.</p>
                 </div>
               </div>
-              <div className="faq__item">
+              <div className="faq__item" data-reveal>
                 <div className="faq__num">04</div>
                 <div>
                   <h3 className="faq__q">Can I donate?</h3>
