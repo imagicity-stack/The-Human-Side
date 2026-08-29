@@ -481,12 +481,20 @@ html.js-reveal [data-reveal].is-in {
 .mobile-nav__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
+  align-items: center;
+  gap: 2px 18px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--muted);
+}
+.mobile-nav__meta a {
+  /* padded out to a comfortable touch target */
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 4px 0;
 }
 .mobile-nav__meta a:hover { color: var(--red); }
 
