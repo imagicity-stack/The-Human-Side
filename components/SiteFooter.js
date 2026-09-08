@@ -82,7 +82,7 @@ export default function SiteFooter() {
             <ul>
               <li><a href="mailto:contact@edenwoods.org">contact@edenwoods.org</a></li>
               <li><Link href="/get-involved">Volunteer with us</Link></li>
-              <li><Link href="/get-involved#donate">Donate</Link></li>
+              <li><Link href="/donate">Donate</Link></li>
               <li><Link href="/contact">Contact details</Link></li>
             </ul>
           </div>

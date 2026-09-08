@@ -12,6 +12,17 @@ const LINKS = [
   { key: "partners", href: "/partners", label: "Partners" },
 ];
 
+// Kept out of the desktop pill row so it can stand on its own as a button;
+// it joins the list in the mobile drawer.
+const DONATE = { key: "donate", href: "/donate", label: "Donate" };
+
+const HeartIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 20s-7.5-4.3-7.5-10a4.2 4.2 0 0 1 7.5-2.6A4.2 4.2 0 0 1 19.5 10c0 5.7-7.5 10-7.5 10z" />
+  </svg>
+);
+
 export default function SiteHeader({ active }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -101,6 +112,14 @@ export default function SiteHeader({ active }) {
           </nav>
 
           <div className="site-header__actions">
+            <Link
+              className={`site-nav__donate${isActive(DONATE) ? " is-active" : ""}`}
+              href={DONATE.href}
+              aria-current={isActive(DONATE) ? "page" : undefined}
+            >
+              <HeartIcon />
+              Donate
+            </Link>
             <Link className="site-nav__cta" href="/get-involved">
               Join us<span aria-hidden="true">→</span>
             </Link>
@@ -132,7 +151,7 @@ export default function SiteHeader({ active }) {
         aria-hidden={!open}
       >
         <nav className="mobile-nav__links" aria-label="Mobile">
-          {LINKS.map((link, i) => (
+          {[...LINKS, DONATE].map((link, i) => (
             <Link
               key={link.key}
               href={link.href}

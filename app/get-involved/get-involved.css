@@ -271,219 +271,6 @@
     margin-top: 12px;
   }
 
-  /* ---- DONATE ---- */
-  .donate {
-    padding: clamp(70px, 8vw, 120px) 0;
-    background:
-      radial-gradient(700px 400px at 90% 10%, color-mix(in oklab, var(--red) 15%, transparent), transparent 65%),
-      radial-gradient(600px 400px at 0% 90%, color-mix(in oklab, var(--cyan) 22%, transparent), transparent 70%),
-      var(--bg);
-    position: relative;
-    overflow: hidden;
-  }
-  .donate__inner {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 64px;
-    align-items: start;
-    position: relative;
-    z-index: 1;
-  }
-  .donate h2 {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(36px, 4.5vw, 64px);
-    line-height: 1;
-    letter-spacing: 0em;
-    margin: 16px 0 20px;
-    max-width: 14ch;
-  }
-  .donate h2 em { font-style: italic; color: var(--red); }
-  .donate p {
-    color: var(--ink-soft);
-    max-width: 44ch;
-    margin: 0 0 32px;
-  }
-  .amounts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  .amount {
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    padding: 22px 14px;
-    text-align: center;
-    cursor: pointer;
-    background: var(--bg);
-    transition: border-color .2s ease, background .2s ease, transform .15s ease, box-shadow .2s ease;
-    position: relative;
-  }
-  .amount:hover { border-color: var(--ink); transform: translateY(-2px); }
-  .amount.is-active {
-    background: var(--ink);
-    color: var(--bg);
-    border-color: var(--ink);
-    box-shadow: 0 12px 32px -12px color-mix(in oklab, var(--ink) 55%, transparent);
-  }
-  .amount.is-active .amount__caption { color: #DCD2E0; }
-  .amount__value {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(22px, 2vw, 30px);
-    letter-spacing: -0.01em;
-    display: block;
-    line-height: 1;
-  }
-  .amount__caption {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 8px;
-    display: block;
-  }
-  .donate__custom {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .donate__custom-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .donate__custom-input {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    padding: 16px 18px;
-    background: var(--bg);
-    transition: border-color .2s ease;
-  }
-  .donate__custom-input:focus-within { border-color: var(--ink); }
-  .donate__custom-input .currency {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 22px;
-    color: var(--ink);
-    margin-right: 6px;
-  }
-  .donate__custom-input input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 22px;
-    color: var(--ink);
-    outline: none;
-    -moz-appearance: textfield;
-  }
-  .donate__custom-input input::-webkit-outer-spin-button,
-  .donate__custom-input input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  .donate__custom-input .freq {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-left: 10px;
-  }
-  .donate__cta {
-    margin-top: 20px;
-    width: 100%;
-    justify-content: center;
-    padding: 18px 24px;
-    font-size: 15px;
-    font-weight: 600;
-    background: var(--red);
-    color: var(--bg);
-  }
-  .donate__cta:hover { background: var(--red-deep); }
-  .donate__cta .amount-label {
-    font-variant-numeric: tabular-nums;
-  }
-  .donate__note {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: 16px;
-  }
-  .donate__trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    margin-top: 18px;
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
-  }
-  .donate__trust span {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .donate__trust span::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--red);
-  }
-
-  .donate__panel {
-    background: var(--ink);
-    color: var(--bg);
-    border-radius: var(--r-lg);
-    padding: 40px 36px;
-  }
-  .donate__panel .eyebrow { color: var(--yellow); }
-  .donate__panel h3 {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 28px;
-    line-height: 1.1;
-    margin: 12px 0 24px;
-  }
-  .donate__panel h3 em { font-style: italic; color: var(--yellow); }
-  .donate__panel .row {
-    padding: 16px 0;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 16px;
-  }
-  .donate__panel .row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .donate__panel .row .k {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--yellow);
-  }
-  .donate__panel .row .v {
-    font-family: var(--serif);
-    font-size: 18px;
-    color: var(--bg);
-  }
-
   /* ---- MEMBERSHIP ---- */
   .membership {
     padding: clamp(80px, 10vw, 140px) 0;
@@ -826,9 +613,9 @@
   .contact-strip .btn--ghost:hover { background: var(--bg); color: var(--ink); }
 
   @media (max-width: 900px) {
-    .ways__head, .form-grid, .donate__inner, .page-hero__inner, .membership__inner { grid-template-columns: 1fr; gap: 32px; }
+    .ways__head, .form-grid, .page-hero__inner, .membership__inner { grid-template-columns: 1fr; gap: 32px; }
     .ways__grid { grid-template-columns: 1fr; }
-    .form__row, .amounts, .check-grid { grid-template-columns: 1fr 1fr; }
+    .form__row, .check-grid { grid-template-columns: 1fr 1fr; }
     .membership__benefits, .membership__kit { grid-template-columns: 1fr 1fr; }
     .membership__card { transform: rotate(0); }
     .membership { padding: clamp(50px, 8vw, 80px) 0; }
@@ -839,15 +626,12 @@
     .membership__cta { width: 100%; justify-content: center; padding: 16px 22px; font-size: 14px; }
     .page-hero { padding: clamp(40px, 8vw, 70px) 0 clamp(30px, 5vw, 50px); }
     .page-hero h1 { font-size: clamp(40px, 11vw, 64px); }
-    .donate__cta { padding: 16px 20px; font-size: 14px; }
-    .donate__trust { gap: 12px; }
     .way { min-height: auto; padding: 28px 24px; }
     .form { padding: 28px 22px; }
     .form-side__image { max-width: 100%; }
     .contact-strip h2 { font-size: clamp(28px, 8vw, 44px); }
   }
   @media (max-width: 520px) {
-    .amounts { grid-template-columns: 1fr 1fr; }
     .membership__price { flex-wrap: wrap; }
     .membership__price .meta { width: 100%; text-align: left; margin-left: 0; padding-top: 8px; border-top: 1px solid color-mix(in oklab, var(--bg) 18%, transparent); }
     .membership__card { padding: 22px 22px; }
