@@ -61,7 +61,7 @@ export default function PartnersPage() {
                   <div className="pair"><span className="k">For donors</span><span className="v">Receipts &amp; quarterly reports</span></div>
                 </div>
                 <div className="partner__cta">
-                  <Link className="btn btn--primary" href="/get-involved#donate">
+                  <Link className="btn btn--primary" href="/donate">
                     Donate via Edenwoods<span className="arrow" aria-hidden="true">→</span>
                   </Link>
                 </div>

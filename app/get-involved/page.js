@@ -38,19 +38,12 @@ async function postJSON(url, body) {
   return data || {};
 }
 
-const SLABS = [
-  [250, "A meal kit"], [500, "A drive day"], [1000, "A sapling cohort"],
-  [2500, "A workshop"], [5000, "A field visit"], [10000, "A term of work"],
-];
-
 export default function GetInvolvedPage() {
   const [fee, setFee] = useState(999);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(null);
-  const [donateAmt, setDonateAmt] = useState(2500);
-  const [custom, setCustom] = useState("");
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -66,8 +59,6 @@ export default function GetInvolvedPage() {
   }, [open]);
 
   function openModal() { setError(""); setSuccess(null); setOpen(true); }
-
-  const effectiveDonate = custom ? Math.max(0, Math.floor(Number(custom) || 0)) : donateAmt;
 
   async function handleRegister(e) {
     e.preventDefault();
@@ -147,29 +138,6 @@ export default function GetInvolvedPage() {
       setBusy(null);
       setError("Could not open the payment window: " + (err.message || err));
     }
-  }
-
-  function handleDonate() {
-    if (effectiveDonate < 1) { alert("Please enter a donation amount."); return; }
-    if (!RZP_KEY || RZP_KEY.includes("REPLACE")) {
-      alert("Razorpay is not configured yet. Set NEXT_PUBLIC_RAZORPAY_KEY_ID to enable donations.");
-      return;
-    }
-    if (typeof window.Razorpay === "undefined") { alert("Razorpay checkout failed to load."); return; }
-    const rzp = new window.Razorpay({
-      key: RZP_KEY,
-      amount: effectiveDonate * 100,
-      currency: "INR",
-      name: "The Human Side",
-      description: "Donation — " + fmt(effectiveDonate),
-      image: "/assets/logo-icon.png",
-      theme: { color: "#7C3F98" },
-      notes: { initiative: "The Human Side", partner: "Edenwoods Eduhub Foundation" },
-      handler: (resp) =>
-        alert(`Thank you for your donation of ${fmt(effectiveDonate)}.\nPayment ID: ${resp.razorpay_payment_id}\n\nA receipt will be emailed by Edenwoods Foundation.`),
-    });
-    rzp.on("payment.failed", (r) => alert("Payment could not be completed.\n" + ((r.error && r.error.description) || "")));
-    rzp.open();
   }
 
   const cardId = success ? success.memberId : "THS-2026-0001";
@@ -356,7 +324,7 @@ export default function GetInvolvedPage() {
                     <li>Ask anything; we&apos;ll answer</li>
                   </ul>
                 </div>
-                <a className="btn btn--primary way__cta" href="#donate">Donate<span className="arrow" aria-hidden="true">→</span></a>
+                <Link className="btn btn--primary way__cta" href="/donate">Donate<span className="arrow" aria-hidden="true">→</span></Link>
               </article>
 
               <article className="way">
@@ -433,74 +401,6 @@ export default function GetInvolvedPage() {
                 </div>
                 <button type="submit" className="btn btn--red form__submit">Send it in<span className="arrow" aria-hidden="true">→</span></button>
               </form>
-            </div>
-          </div>
-        </section>
-
-        {/* DONATE */}
-        <section className="donate" id="donate">
-          <div className="wrap">
-            <div className="donate__inner">
-              <div>
-                <span className="eyebrow">— Donate · INR</span>
-                <h2>Money <em>moves</em> small, careful work.</h2>
-                <p>
-                  Donations are received by the Edenwoods Eduhub Foundation and ring-fenced
-                  for The Human Side. Every quarter we publish what came in and what it
-                  paid for — receipts included.
-                </p>
-
-                <div className="amounts">
-                  {SLABS.map(([val, cap]) => (
-                    <label
-                      key={val}
-                      className={"amount" + (!custom && donateAmt === val ? " is-active" : "")}
-                      onClick={() => { setDonateAmt(val); setCustom(""); }}
-                    >
-                      <span className="amount__value">{fmt(val)}</span>
-                      <span className="amount__caption">{cap}</span>
-                    </label>
-                  ))}
-                </div>
-
-                <div className="donate__custom">
-                  <label className="donate__custom-label" htmlFor="custom-amount">— Or enter your own amount</label>
-                  <div className="donate__custom-input">
-                    <span className="currency">₹</span>
-                    <input
-                      id="custom-amount" type="number" min="10" step="1" inputMode="numeric"
-                      placeholder="Custom amount" value={custom}
-                      onChange={(e) => setCustom(e.target.value)}
-                    />
-                    <span className="freq">INR · one-time</span>
-                  </div>
-                </div>
-
-                <button type="button" className="btn donate__cta" onClick={handleDonate}>
-                  Donate <span className="amount-label">{effectiveDonate > 0 ? fmt(effectiveDonate) : "—"}</span> securely
-                  <span className="arrow" aria-hidden="true">→</span>
-                </button>
-
-                <p className="donate__note">— Powered by Razorpay · 100% to The Human Side fund</p>
-
-                <div className="donate__trust">
-                  <span>PCI-DSS Secure</span>
-                  <span>80G receipt on request</span>
-                  <span>Cards · UPI · Netbanking</span>
-                </div>
-              </div>
-
-              <aside className="donate__panel">
-                <span className="eyebrow">— Where it goes</span>
-                <h3>Plain numbers,<br /><em>posted</em> publicly.</h3>
-                <div className="row"><span className="k">Drives</span><span className="v">Books, meal kits, supplies for monthly field visits</span></div>
-                <div className="row"><span className="k">Workshops</span><span className="v">Professional facilitators for safety &amp; awareness sessions</span></div>
-                <div className="row"><span className="k">Materials</span><span className="v">Saplings, reusable kits, printed resources</span></div>
-                <div className="row"><span className="k">Overhead</span><span className="v">Capped at 10% — Edenwoods absorbs the rest</span></div>
-                <p style={{ fontFamily: "var(--mono)", fontSize: 11, color: "#9B95B0", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 28 }}>
-                  Quarterly reports posted by Edenwoods Foundation
-                </p>
-              </aside>
             </div>
           </div>
         </section>

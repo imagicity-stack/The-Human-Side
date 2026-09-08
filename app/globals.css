@@ -362,6 +362,40 @@ html.js-reveal [data-reveal].is-in {
 .site-nav__cta:hover span { transform: translateX(4px); }
 .site-nav__cta:active { transform: translateY(0); }
 
+/* ---- donate button ---- */
+.site-nav__donate {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 17px;
+  border-radius: var(--r-pill);
+  border: 1px solid color-mix(in oklab, var(--red) 40%, var(--line));
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  color: var(--red);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.site-nav__donate svg { width: 14px; height: 14px; flex-shrink: 0; }
+.site-nav__donate:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.site-nav__donate:active { transform: translateY(0); }
+.site-nav__donate.is-active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
 /* ---- burger ---- */
 .site-header__burger {
   display: none;
@@ -791,15 +825,23 @@ html.js-reveal [data-reveal].is-in {
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 1040px) {
+@media (max-width: 1160px) {
   .site-nav__link { padding: 8px 12px; font-size: 13.5px; }
+  .site-nav__donate { padding: 9px 14px; font-size: 13px; }
+  .site-nav__cta { padding: 10px 16px; font-size: 13px; }
   .mark__words .b { display: none; }
+}
+
+@media (max-width: 1020px) {
+  .site-nav__donate svg { display: none; }
+  .site-nav__donate { padding: 9px 13px; }
 }
 
 @media (max-width: 900px) {
   :root { --gutter: clamp(20px, 5vw, 32px); --header-h: 68px; }
 
-  .site-nav { display: none; }
+  .site-nav,
+  .site-nav__donate { display: none; }
   .site-header__burger { display: block; }
   .site-header__inner { gap: 16px; }
   .site-header__actions { margin-left: auto; }
