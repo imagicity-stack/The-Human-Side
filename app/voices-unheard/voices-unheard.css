@@ -15,8 +15,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(50% 46% at 82% 10%, color-mix(in oklab, var(--red) 52%, transparent), transparent 68%),
-      radial-gradient(46% 44% at 4% 92%, color-mix(in oklab, var(--teal) 54%, transparent), transparent 70%),
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent),
       repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,255,255,.022) 28px 29px);
   }
   .vu-hero .wrap { position: relative; z-index: 1; }
@@ -54,7 +54,7 @@
     color: #F7F2FC;
   }
   .vu-hero__title em {
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
     background: linear-gradient(105deg, var(--yellow), #F0D8A8 42%, var(--cyan));
     -webkit-background-clip: text;
@@ -65,7 +65,7 @@
   .vu-hero__tag {
     margin: clamp(18px, 2.4vw, 30px) 0 0;
     font-family: var(--serif);
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
     font-variation-settings: 'opsz' 40, 'SOFT' 40;
     font-size: clamp(20px, 2.1vw, 30px);
@@ -193,7 +193,7 @@
     max-width: 11ch;
     color: var(--ink);
   }
-  .vu-field__label h2 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .vu-field__label h2 em { font-style: normal; font-weight: 400; color: var(--red); }
   .vu-field__body .lede {
     margin: 0 0 22px;
     font-size: clamp(20px, 1.75vw, 26px);
@@ -320,8 +320,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(48% 44% at 10% 12%, color-mix(in oklab, var(--red) 48%, transparent), transparent 68%),
-      radial-gradient(46% 42% at 92% 90%, color-mix(in oklab, var(--teal) 52%, transparent), transparent 70%);
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent);
   }
   .vu-schools .wrap { position: relative; z-index: 1; }
 
@@ -337,7 +337,7 @@
     letter-spacing: -0.04em;
     color: #F7F2FC;
   }
-  .vu-schools__head h2 em { font-style: italic; font-weight: 400; color: var(--yellow); }
+  .vu-schools__head h2 em { font-style: normal; font-weight: 400; color: var(--yellow); }
 
   .vu-schools__grid {
     display: grid;
@@ -355,7 +355,7 @@
   .vu-schools__copy p { margin: 0 0 18px; color: #B6A9C6; font-size: 16px; line-height: 1.72; max-width: 54ch; }
   .vu-schools__line {
     font-family: var(--serif) !important;
-    font-style: italic;
+    font-style: normal;
     font-variation-settings: 'opsz' 28, 'SOFT' 40;
     font-size: 19px !important;
     line-height: 1.5 !important;
@@ -416,7 +416,7 @@
     color: var(--ink);
     text-wrap: balance;
   }
-  .vu-meaning__copy em { font-style: italic; color: var(--red); }
+  .vu-meaning__copy em { font-style: normal; color: var(--red); }
   .vu-meaning__list {
     list-style: none;
     margin: clamp(30px, 4vw, 48px) 0 0;
@@ -467,7 +467,7 @@
     letter-spacing: -0.038em;
     color: var(--ink);
   }
-  .vu-learn__label h2 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .vu-learn__label h2 em { font-style: normal; font-weight: 400; color: var(--red); }
   .vu-learn__body p { margin: 0 0 20px; color: var(--ink-soft); font-size: 16.5px; line-height: 1.72; max-width: 60ch; }
   .vu-learn__line {
     font-family: var(--serif);
@@ -492,8 +492,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(52% 48% at 14% 16%, color-mix(in oklab, var(--red) 56%, transparent), transparent 66%),
-      radial-gradient(46% 44% at 92% 88%, color-mix(in oklab, var(--teal) 54%, transparent), transparent 68%),
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent),
       repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,255,255,.022) 28px 29px);
   }
   .vu-close .wrap { position: relative; z-index: 1; }
@@ -510,7 +510,7 @@
     color: #F7F2FC;
   }
   .vu-close__head em {
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
     background: linear-gradient(110deg, var(--yellow), #F0D8A8 45%, var(--cyan));
     -webkit-background-clip: text;
@@ -548,7 +548,7 @@
     letter-spacing: -0.035em;
     color: #F7F2FC;
   }
-  .vu-close__motto em { font-style: italic; font-weight: 400; color: var(--yellow); }
+  .vu-close__motto em { font-style: normal; font-weight: 400; color: var(--yellow); }
 
   .vu-close__row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(30px, 3.5vw, 44px); }
 

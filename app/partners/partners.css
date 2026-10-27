@@ -17,8 +17,8 @@
     height: 150%;
     pointer-events: none;
     background:
-      radial-gradient(42% 40% at 86% 10%, color-mix(in oklab, var(--teal) 20%, transparent), transparent 70%),
-      radial-gradient(38% 36% at 6% 66%, color-mix(in oklab, var(--red) 20%, transparent), transparent 72%);
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent);
   }
   .page-hero .wrap { position: relative; z-index: 1; }
 
@@ -50,7 +50,7 @@
     max-width: 13ch;
     color: var(--ink);
   }
-  .page-hero h1 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .page-hero h1 em { font-style: normal; font-weight: 400; color: var(--red); }
   .page-hero__lede {
     margin: 0;
     font-family: var(--serif);
@@ -62,7 +62,7 @@
     color: var(--ink-soft);
     max-width: 40ch;
   }
-  .page-hero__lede em { font-style: italic; color: var(--red); }
+  .page-hero__lede em { font-style: normal; color: var(--red); }
 
   /* -------------------------------------------------- PARTNER */
   .partner { padding: clamp(64px, 8vw, 120px) 0; border-bottom: 1px solid var(--line); }
@@ -99,7 +99,7 @@
     letter-spacing: -0.04em;
     color: var(--ink);
   }
-  .partner h2 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .partner h2 em { font-style: normal; font-weight: 400; color: var(--red); }
   .partner__lede {
     margin: 0 0 24px;
     font-family: var(--serif);
@@ -111,9 +111,9 @@
     color: var(--ink);
     max-width: 36ch;
   }
-  .partner__lede em { font-style: italic; color: var(--red); }
+  .partner__lede em { font-style: normal; color: var(--red); }
   .partner__copy p { margin: 0 0 16px; color: var(--ink-soft); max-width: 52ch; font-size: 16px; line-height: 1.66; }
-  .partner__copy p em { font-style: italic; color: var(--red); }
+  .partner__copy p em { font-style: normal; color: var(--red); }
 
   .partner__meta {
     margin-top: 30px;
@@ -200,7 +200,7 @@
     max-width: 24ch;
     color: var(--ink);
   }
-  .how__head h2 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .how__head h2 em { font-style: normal; font-weight: 400; color: var(--red); }
 
   .how__grid {
     display: grid;
@@ -227,7 +227,7 @@
   .how__step .num {
     margin-bottom: 20px;
     font-family: var(--serif);
-    font-style: italic;
+    font-style: normal;
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 38px;
@@ -260,8 +260,8 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(46% 44% at 12% 14%, color-mix(in oklab, var(--red) 46%, transparent), transparent 68%),
-      radial-gradient(44% 42% at 92% 88%, color-mix(in oklab, var(--teal) 52%, transparent), transparent 70%);
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent);
   }
   .become .wrap { position: relative; z-index: 1; }
   .become__inner {
@@ -281,7 +281,7 @@
     letter-spacing: -0.04em;
     color: #F4EEFA;
   }
-  .become h2 em { font-style: italic; font-weight: 400; color: var(--yellow); }
+  .become h2 em { font-style: normal; font-weight: 400; color: var(--yellow); }
   .become p {
     margin: 0 0 30px;
     font-family: var(--serif);
@@ -325,7 +325,7 @@
     letter-spacing: -0.018em;
     color: #EFE7F7;
   }
-  .become__list .v em { font-style: italic; color: var(--yellow); }
+  .become__list .v em { font-style: normal; color: var(--yellow); }
 
   /* ------------------------------------------------ PAGE CTA */
   .page-cta {
@@ -345,7 +345,7 @@
     max-width: 17ch;
     color: var(--ink);
   }
-  .page-cta h2 em { font-style: italic; font-weight: 400; color: var(--red); }
+  .page-cta h2 em { font-style: normal; font-weight: 400; color: var(--red); }
   .page-cta .row { display: flex; justify-content: center; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
 
   /* ----------------------------------------------- RESPONSIVE */

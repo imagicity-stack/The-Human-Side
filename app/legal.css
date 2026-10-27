@@ -15,7 +15,7 @@
     inset: -60% -10% auto -10%;
     height: 200%;
     pointer-events: none;
-    background: radial-gradient(38% 40% at 88% 20%, color-mix(in oklab, var(--red) 16%, transparent), transparent 72%);
+    background: linear-gradient(transparent, transparent);
   }
   .legal-hero .wrap { position: relative; z-index: 1; }
 

@@ -423,7 +423,7 @@ export default function GetInvolvedPage() {
 
         {/* REGISTRATION MODAL */}
         {open && (
-        <div className="reg-overlay is-open" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
+        <div className="reg-overlay is-open" data-lenis-prevent role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
           <div className="reg-dialog">
             <button type="button" className="reg-dialog__close" aria-label="Close registration" onClick={() => setOpen(false)}>×</button>
 
