@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
+import { gsap, useGSAP, MOTION_OK } from "@/lib/gsap";
 
 const SOCIALS = [
   {
@@ -6,9 +10,9 @@ const SOCIALS = [
     href: "#",
     path: (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <rect x="3.5" y="3.5" width="17" height="17" />
         <circle cx="12" cy="12" r="4" />
-        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
+        <rect x="16.4" y="6" width="1.6" height="1.6" fill="currentColor" stroke="none" />
       </>
     ),
   },
@@ -17,7 +21,7 @@ const SOCIALS = [
     href: "#",
     path: (
       <>
-        <rect x="2.5" y="5.5" width="19" height="13" rx="4" />
+        <rect x="2.5" y="5.5" width="19" height="13" />
         <path d="M10.5 9.6v4.8L14.8 12z" />
       </>
     ),
@@ -27,16 +31,41 @@ const SOCIALS = [
     href: "#",
     path: (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="4" />
-        <path d="M7.4 10.4v6.2M7.4 7.6v.1M11.4 16.6v-6.2M11.4 13c0-1.5.9-2.4 2.2-2.4s2.1.9 2.1 2.5v3.5" />
+        <rect x="3.5" y="3.5" width="17" height="17" />
+        <path d="M7.6 10.4v6.2M7.6 7.6v.1M11.4 16.6v-6.2M11.4 13c0-1.5.9-2.4 2.2-2.4s2.1.9 2.1 2.5v3.5" />
       </>
     ),
   },
 ];
 
+const WORD = "The Human Side";
+
 export default function SiteFooter() {
+  const ref = useRef(null);
+
+  // The wordmark rises letter by letter as the footer comes into view.
+  useGSAP(
+    () => {
+      gsap.matchMedia().add(MOTION_OK, () => {
+        gsap.from(".site-footer__word span", {
+          yPercent: 100,
+          duration: 1.2,
+          ease: "expo.out",
+          stagger: 0.035,
+          scrollTrigger: { trigger: ".site-footer__word", start: "top bottom-=40" },
+        });
+      });
+    },
+    { scope: ref }
+  );
+
+  const toTop = () => {
+    if (window.__lenis) window.__lenis.scrollTo(0, { duration: 1.6 });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" ref={ref}>
       <div className="site-footer__inner">
         <div className="site-footer__top">
           <div>
@@ -54,9 +83,8 @@ export default function SiteFooter() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    strokeWidth="1.6"
+                    strokeLinecap="square"
                     aria-hidden="true"
                   >
                     {s.path}
@@ -107,9 +135,19 @@ export default function SiteFooter() {
 
         <div className="site-footer__bottom">
           <span>© 2026 The Human Side · Edenwoods Eduhub Foundation</span>
-          <span>Made with care, by hand</span>
+          <button type="button" className="site-footer__top-btn" onClick={toTop}>
+            Back to top ↑
+          </button>
         </div>
       </div>
+
+      <p className="site-footer__word" aria-hidden="true">
+        {WORD.split("").map((c, i) => (
+          <span key={i} className={i >= 10 ? "accent" : undefined}>
+            {c === " " ? " " : c}
+          </span>
+        ))}
+      </p>
     </footer>
   );
 }

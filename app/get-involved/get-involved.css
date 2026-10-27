@@ -33,7 +33,7 @@
     margin: 0;
     max-width: 13ch;
   }
-  .page-hero h1 em { font-style: italic; color: var(--red); }
+  .page-hero h1 em { font-style: normal; color: var(--red); }
   .page-hero__lede {
     font-family: var(--serif);
     font-size: clamp(20px, 1.7vw, 26px);
@@ -62,7 +62,7 @@
     letter-spacing: 0em;
     margin: 16px 0 0;
   }
-  .ways__head h2 em { font-style: italic; color: var(--red); }
+  .ways__head h2 em { font-style: normal; color: var(--red); }
   .ways__head p {
     color: var(--ink-soft);
     margin: 0;
@@ -88,7 +88,7 @@
   .way:hover { background: var(--bg-deep); border-color: var(--ink); }
   .way__num {
     font-family: var(--serif);
-    font-style: italic;
+    font-style: normal;
     font-size: 56px;
     line-height: 0.9;
     color: var(--red);
@@ -96,7 +96,7 @@
   .way__icon {
     width: 56px;
     height: 56px;
-    border-radius: 999px;
+    border-radius: 0;
     background: var(--bg-deep);
     display: flex;
     align-items: center;
@@ -164,7 +164,7 @@
     letter-spacing: 0em;
     margin: 16px 0 20px;
   }
-  .form-side h2 em { font-style: italic; color: var(--red); }
+  .form-side h2 em { font-style: normal; color: var(--red); }
   .form-side__image {
     margin-top: 32px;
     aspect-ratio: 4/3;
@@ -258,14 +258,14 @@
     gap: 10px;
     padding: 12px 14px;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: 0;
     cursor: pointer;
     font-size: 13px;
     color: var(--ink);
     transition: border-color .15s ease, background .15s ease;
   }
   .check:hover { border-color: var(--ink); }
-  .check input { appearance: none; width: 14px; height: 14px; border-radius: 999px; border: 1.5px solid var(--ink); margin: 0; }
+  .check input { appearance: none; width: 14px; height: 14px; border-radius: 0; border: 1.5px solid var(--ink); margin: 0; }
   .check input:checked { background: var(--red); border-color: var(--red); }
   .form__submit {
     margin-top: 12px;
@@ -275,8 +275,8 @@
   .membership {
     padding: clamp(80px, 10vw, 140px) 0;
     background:
-      radial-gradient(900px 600px at 12% 12%, color-mix(in oklab, var(--red) 75%, transparent), transparent 60%),
-      radial-gradient(800px 500px at 92% 88%, color-mix(in oklab, var(--teal) 90%, transparent), transparent 65%),
+      linear-gradient(transparent, transparent),
+      linear-gradient(transparent, transparent),
       linear-gradient(140deg, var(--purple-deep) 0%, var(--ink) 70%);
     color: var(--bg);
     position: relative;
@@ -309,7 +309,7 @@
     text-wrap: balance;
   }
   .membership__copy h2 em {
-    font-style: italic;
+    font-style: normal;
     background: linear-gradient(120deg, var(--yellow), var(--cyan));
     -webkit-background-clip: text;
     background-clip: text;
@@ -398,7 +398,7 @@
     background: var(--yellow);
     color: var(--ink);
     border: none;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: var(--sans);
     font-size: 15px;
     font-weight: 700;
@@ -418,7 +418,7 @@
     background: var(--ink);
     color: var(--yellow);
     padding: 6px 12px;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.12em;
@@ -434,20 +434,20 @@
     aspect-ratio: 1.586 / 1; /* ID card ratio */
     background:
       linear-gradient(135deg, color-mix(in oklab, var(--bg) 96%, var(--yellow) 8%) 0%, var(--bg) 60%, color-mix(in oklab, var(--bg) 90%, var(--cyan) 12%) 100%);
-    border-radius: 14px;
+    border-radius: 0;
     padding: 32px 34px;
     color: var(--ink);
     box-shadow:
       0 40px 80px -30px rgba(0,0,0,0.55),
       0 0 0 1px color-mix(in oklab, var(--ink) 10%, transparent),
       inset 0 0 0 1px rgba(255,255,255,0.6);
-    transform: rotate(-3deg);
+    transform: none;
     transition: transform .4s cubic-bezier(.2,.7,.2,1);
     display: grid;
     grid-template-rows: auto 1fr auto;
     gap: 14px;
   }
-  .membership__card:hover { transform: rotate(0deg) scale(1.02); }
+  .membership__card:hover { transform: translateY(-4px); }
   .membership__card-top {
     display: flex;
     justify-content: space-between;
@@ -514,7 +514,7 @@
     color: var(--ink);
   }
   .membership__card-center h3 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--red);
   }
   .membership__card-bottom {
@@ -539,7 +539,7 @@
   .membership__card-bottom .stamp {
     text-align: right;
     font-family: var(--serif);
-    font-style: italic;
+    font-style: normal;
     font-size: 13px;
     line-height: 1.1;
     color: var(--red);
@@ -601,7 +601,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .contact-strip h2 em { font-style: italic; color: var(--yellow); }
+  .contact-strip h2 em { font-style: normal; color: var(--yellow); }
   .contact-strip p { color: #DCD2E0; max-width: 50ch; margin: 0 auto 32px; font-family: var(--serif); font-size: 19px; }
   .contact-strip .row {
     display: flex;
@@ -665,7 +665,7 @@
     max-width: 780px;
     margin: auto;
     background: var(--bg);
-    border-radius: 10px;
+    border-radius: 0;
     box-shadow: 0 50px 110px -30px rgba(0,0,0,0.6);
     padding: clamp(26px, 4vw, 48px);
   }
@@ -675,7 +675,7 @@
     right: 16px;
     width: 38px;
     height: 38px;
-    border-radius: 999px;
+    border-radius: 0;
     border: 1px solid var(--line);
     background: var(--bg);
     color: var(--ink);
@@ -698,7 +698,7 @@
     letter-spacing: -0.005em;
     margin: 12px 0 10px;
   }
-  .reg-head h2 em { font-style: italic; color: var(--red); }
+  .reg-head h2 em { font-style: normal; color: var(--red); }
   .reg-head p {
     color: var(--ink-soft);
     margin: 0 0 26px;
@@ -725,7 +725,7 @@
     background: color-mix(in oklab, var(--red) 12%, var(--bg));
     border: 1px solid color-mix(in oklab, var(--red) 45%, transparent);
     color: var(--red-deep);
-    border-radius: 6px;
+    border-radius: 0;
     padding: 12px 16px;
     font-size: 14px;
     line-height: 1.45;
@@ -759,7 +759,7 @@
     background: var(--ink);
     color: var(--bg);
     border: none;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: var(--sans);
     font-size: 15px;
     font-weight: 700;
@@ -771,7 +771,7 @@
     background: var(--yellow);
     color: var(--ink);
     padding: 5px 12px;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.1em;
@@ -791,7 +791,7 @@
   .reg-success__tick {
     width: 64px; height: 64px;
     margin: 0 auto 20px;
-    border-radius: 999px;
+    border-radius: 0;
     background: color-mix(in oklab, var(--red) 14%, var(--bg));
     color: var(--red);
     display: flex; align-items: center; justify-content: center;
@@ -802,14 +802,14 @@
     font-size: clamp(28px, 4vw, 40px);
     margin: 0 0 10px;
   }
-  .reg-success h2 em { font-style: italic; color: var(--red); }
+  .reg-success h2 em { font-style: normal; color: var(--red); }
   .reg-success p { color: var(--ink-soft); max-width: 48ch; margin: 0 auto 26px; font-size: 15px; }
   .reg-id-card {
     margin: 0 auto 26px;
     max-width: 360px;
     background: linear-gradient(140deg, var(--purple-deep), var(--ink));
     color: var(--bg);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 26px 28px;
     text-align: left;
     box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6);
@@ -844,7 +844,7 @@
     background: var(--ink);
     color: var(--bg);
     border: none;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: var(--sans);
     font-size: 14px;
     font-weight: 600;
@@ -855,7 +855,7 @@
 
   @media (max-width: 600px) {
     .reg-row-3 { grid-template-columns: 1fr; }
-    .reg-dialog { border-radius: 8px; }
+    .reg-dialog { border-radius: 0; }
     .reg-actions { flex-direction: column; align-items: stretch; }
     .reg-submit { justify-content: center; }
   }
@@ -948,7 +948,7 @@ body.reg-locked { overflow: hidden; }
 .pg-gi .check input {
   width: 16px;
   height: 16px;
-  border-radius: 5px;
+  border-radius: 0;
   border: 1.5px solid color-mix(in oklab, var(--ink) 34%, transparent);
   flex-shrink: 0;
   transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
@@ -1043,4 +1043,26 @@ body.reg-locked { overflow: hidden; }
 .pg-gi .reg-fieldset + .reg-fieldset {
   border-top: 1px solid var(--line);
   padding-top: 26px;
+}
+
+/* ---- the three ways: one ruled row, not three floating cards ---- */
+.pg-gi .ways__grid {
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.pg-gi .way,
+.pg-gi .way:hover {
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.pg-gi .way:first-child { border-left: 0; }
+.pg-gi .way:hover { background: var(--surface); }
+@media (max-width: 900px) {
+  .pg-gi .way,
+  .pg-gi .way:hover { border-left: 0; padding-left: 0; padding-right: 0; }
+  .pg-gi .way + .way { border-top: 1px solid var(--line); }
 }
